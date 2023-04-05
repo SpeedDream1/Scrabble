@@ -65,11 +65,13 @@ def get_mot(coord, sens):
 
 premier_tour = True
 new_tour = True
-tour = 1
+tour = 0
+J_lettres = []
 
 
 
 # ______________________________________[préparation de l'interface]__________________________________________
+
 
 
 from interface import *
@@ -143,26 +145,27 @@ while running :
 
     # Si c'est un nouveau tour
     if new_tour:
-        if not premier_tour:
-            if '^' in J_lettres: # si il y a des lettres à remplacer
-                i = 0
-                for l in J_lettres: # on décale les lettres qui restent à gauche
-                    if l != '^':
-                        joueurs[tour][1][i] = l
-                        i += 1
-
-                while i < 7: # puis puis on pioche pour completer sa main
-                    if len(pioche) > 0:
-                        joueurs[tour][1][i] = piocher()
-                    else:
-                        joueurs[tour][1][i] = "_" # lettre vide si la pioche est vide
+        if '^' in J_lettres: # si il y a des lettres à remplacer
+            i = 0
+            for l in J_lettres: # on décale les lettres qui restent à gauche
+                if l != '^':
+                    joueurs[tour][1][i] = l
                     i += 1
 
-            else: 
-                for coord in [i for i in J_lettres if type(i) == tuple]:
-                    plateau[coord[0]][coord[1]] = '/' # ranger les lettres
+            while i < 7: # puis puis on pioche pour completer sa main
+                if len(pioche) > 0:
+                    joueurs[tour][1][i] = piocher()
+                else:
+                    joueurs[tour][1][i] = "_" # lettre vide si la pioche est vide
+                i += 1
 
-            tour = tour%nb_joueur + 1 # au joueur suivant
+        else: 
+            for i in range(len(J_lettres)):
+                lettre = J_lettres[i] # ranger les lettres
+                if type(lettre) == tuple:
+                    plateau[lettre[0]][lettre[1]] = '/'
+
+        tour = tour%nb_joueur + 1 # au joueur suivant
 
         J_lettres = list(joueurs[tour][1]) # récuperer les lettres du joueur
         J_lettres_img = [Lettre(i) if i != '_' else '_' for i in J_lettres]
@@ -243,7 +246,7 @@ while running :
                     break
             
             # validation du mot
-            if bouton_valider_rect.collidepoint(event.pos) :
+            if bouton_valider_rect.collidepoint(event.pos):
 
                 valide = True
 
@@ -384,6 +387,53 @@ while running :
                 new_tour = True
                 if premier_tour:
                     premier_tour = False
+
+            entree = 0
+            # Defausser des lettres
+            if 0:
+                for i in range(7):
+                    lettre = J_lettres[i]
+                    if type(lettre) == tuple: # ranger les lettres
+                        plateau[lettre[0]][lettre[1]] = '/'
+                        placer_lettre(J_lettres_img[i],"chevalet",(i,))
+                J_lettres = list(joueurs[tour][1])
+
+                entree = '0'
+                print(*J_lettres, end=' - ')
+                while entree != '':
+                    entree = input("Lettre à defausser: ")
+                    if entree.isdigit():
+                        if J_lettres[int(entree)] != '^':
+                            J_lettres[int(entree)] = '^' # lettres à remplacer
+                        else:
+                            J_lettres[int(entree)] = joueurs[tour][1][int(entree)]
+                    print(*J_lettres, end=' - ')
+                new_tour = True
+
+
+            # Ranger les lettres
+            if 0:
+                for i in range(7):
+                    lettre = J_lettres[i]
+                    if type(lettre) == tuple:
+                        plateau[lettre[0]][lettre[1]] = '/'
+                        placer_lettre(J_lettres_img[i],"chevalet",(i,))
+                J_lettres = list(joueurs[tour][1])
+
+
+            # Passer son tour
+            if 0:
+                new_tour = True
+
+
+            # Commandes admin
+            if 0:
+                command = input("Admin: V - vider pioche : ").upper()
+
+                if command == 'V': # vider la pioche
+                    nb = int(input("nb: "))
+                    for i in range(nb):
+                        piocher()
 
         # déplacer la lettre
         if mvt_lettre[0]:
