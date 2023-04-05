@@ -5,9 +5,7 @@ from data import *
 from trouver_mot import *
 from lettres import *
 
-
-#Ahhhhhhhhhhhhhhhhhhhhh
-
+# test
 
 # ______________________________________[préparation de la partie]__________________________________________
 
