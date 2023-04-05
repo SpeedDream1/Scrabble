@@ -6,6 +6,7 @@ from trouver_mot import *
 from lettres import *
 
 
+# test
 
 # ______________________________________[préparation de la partie]__________________________________________
 
