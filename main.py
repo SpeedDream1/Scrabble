@@ -189,11 +189,58 @@ while running :
             running = False
             pygame.quit()
         
-        
-        elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 : # clic gauche pressé 
+        # Placement d'une lettre
+        elif event.type == pygame.MOUSEBUTTONUP and event.button == 1: # clic gauche relevé
+            x, y = pygame.mouse.get_pos()
+            if mvt_lettre[0] : # Si on est en train de déplacer une lettre
+
+                i_lettre = mvt_lettre[1]
+                emplacement, coord = convert_px_coord(x, y)
+
+                if emplacement == "chevalet": # si on place la lettre sur le chevalet
+                    pos = int(max(coord))
+
+                    if type(J_lettres[i_lettre]) == tuple: # si la lettre était sur le plateau
+                        plateau[J_lettres[i_lettre][0]][J_lettres[i_lettre][1]] = '/'
+                        J_lettres[i_lettre] = joueurs[tour][1][i_lettre] # on la remet d'abord sur le chevalet
+                        placer_lettre(J_lettres_img[i_lettre], "chevalet", (i_lettre,))
+
+                    if type(J_lettres[pos]) == tuple: # si l'autre est sur le plateau
+                        plateau[J_lettres[pos][0]][J_lettres[pos][1]] = str(i_lettre) # on l'échange
+                        
+                    if i_lettre != pos: # puis on échange
+                        placer_lettre(J_lettres_img[i_lettre], "chevalet", (pos,))
+                        if type(J_lettres[pos]) != tuple: # si l'autre lettre est sur le chevalet
+                            placer_lettre(J_lettres_img[pos], "chevalet", (i_lettre,))
+                        J_lettres[i_lettre], J_lettres[pos] = J_lettres[pos], J_lettres[i_lettre]
+                        J_lettres_img[i_lettre], J_lettres_img[pos] = J_lettres_img[pos], J_lettres_img[i_lettre]
+                        joueurs[tour][1][i_lettre], joueurs[tour][1][pos] = joueurs[tour][1][pos], joueurs[tour][1][i_lettre]
+
+                if emplacement == "plateau" and plateau[coord[0]][coord[1]] == "/": # si on place la lettre sur le plateau
+                    
+                    if type(J_lettres[i_lettre]) == tuple: # si la lettre est sur le plateau
+                        old_coord = J_lettres[i_lettre]
+                        plateau[old_coord[0]][old_coord[1]] = '/'
+                    J_lettres[i_lettre] = coord  # remplace la lettre par ses coordonnés
+                    plateau[coord[0]][coord[1]] = str(i_lettre)
+                    placer_lettre(J_lettres_img[i_lettre], "plateau", coord)
+
+                else: # si on place la lettre hors du cadre ou sur une case occupée elle revient a sa position
+                    if type(J_lettres[i_lettre]) == tuple: # si elle était sur le plateau
+                        placer_lettre(J_lettres_img[i_lettre], "plateau", J_lettres[i_lettre])
+                    else: # si elle etait sur son chevalet
+                        placer_lettre(J_lettres_img[i_lettre], "chevalet", (i_lettre,))
+
+            mvt_lettre = (False,0)
+            afficher_plateau()
+            print(J_lettres)
+
+        # Clic gauche pressé 
+        elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 : 
             for i, lettre in enumerate(J_lettres_img):
                 if lettre.position.collidepoint(event.pos): # Si le curseur est sur une lettre
                     mvt_lettre = (True,i)
+                    break
             
             # validation du mot
             if bouton_valider_rect.collidepoint(event.pos) :
@@ -337,52 +384,6 @@ while running :
                 new_tour = True
                 if premier_tour:
                     premier_tour = False
-        
-        # Placement d'une lettre
-        elif event.type == pygame.MOUSEBUTTONUP and event.button == 1: # clic gauche relevé levé
-            x, y = pygame.mouse.get_pos()
-            if mvt_lettre[0] : # Si on est en train de déplacer une lettre
-
-                i_lettre = mvt_lettre[1]
-                emplacement, coord = convert_px_coord(x, y)
-                            
-                if emplacement == "chevalet": # si on place la lettre sur le chevalet
-                    pos = int(max(coord))
-
-                    if type(J_lettres[i_lettre]) == tuple: # si la lettre était sur le plateau
-                        plateau[J_lettres[i_lettre][0]][J_lettres[i_lettre][1]] = '/'
-                        J_lettres[i_lettre] = joueurs[tour][1][i_lettre] # on la remet d'abord sur le chevalet
-                        placer_lettre(J_lettres_img[i_lettre], "chevalet", (i_lettre,))
-
-                    if type(J_lettres[pos]) == tuple: # si l'autre est sur le plateau
-                        plateau[J_lettres[pos][0]][J_lettres[pos][1]] = str(i_lettre) # on l'échange
-                        
-                    if i_lettre != pos: # puis on échange
-                        placer_lettre(J_lettres_img[i_lettre], "chevalet", (pos,))
-                        if type(J_lettres[pos]) != tuple: # si l'autre lettre est sur le chevalet
-                            placer_lettre(J_lettres_img[pos], "chevalet", (i_lettre,))
-                        J_lettres[i_lettre], J_lettres[pos] = J_lettres[pos], J_lettres[i_lettre]
-                        J_lettres_img[i_lettre], J_lettres_img[pos] = J_lettres_img[pos], J_lettres_img[i_lettre]
-                        joueurs[tour][1][i_lettre], joueurs[tour][1][pos] = joueurs[tour][1][pos], joueurs[tour][1][i_lettre]
-
-                if emplacement == "plateau" and plateau[coord[0]][coord[1]] == "/": # si on place la lettre sur le plateau
-                    
-                    if type(J_lettres[i_lettre]) == tuple: # si la lettre est sur le plateau
-                        old_coord = J_lettres[i_lettre]
-                        plateau[old_coord[0]][old_coord[1]] = '/'
-                    J_lettres[i_lettre] = coord  # remplace la lettre par ses coordonnés
-                    plateau[coord[0]][coord[1]] = str(i_lettre)
-                    placer_lettre(J_lettres_img[i_lettre], "plateau", coord)
-
-                else: # si on place la lettre hors du cadre ou sur une case occupée elle revient a sa position
-                    if type(J_lettres[i_lettre]) == tuple: # si elle était sur le plateau
-                        placer_lettre(J_lettres_img[i_lettre], "plateau", J_lettres[i_lettre])
-                    else: # si elle etait sur son chevalet
-                        placer_lettre(J_lettres_img[i_lettre], "chevalet", (i_lettre,))
-
-            mvt_lettre = (False,0)
-            afficher_plateau()
-            print(J_lettres)
 
         # déplacer la lettre
         if mvt_lettre[0]:
