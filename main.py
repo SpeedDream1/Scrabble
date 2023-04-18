@@ -139,8 +139,10 @@ while running :
     # Affichage de la fenêtre
     screen.fill((255,255,255))
     pygame.draw.rect(screen,(100,100,100),chevalet_rect,0) # création du rectangle chevalet
-    pygame.draw.rect(screen,(0,153,102),bouton_valider_rect,0)
+    pygame.draw.rect(screen,bouton_valider_color,bouton_valider_rect,0)
     pygame.draw.rect(screen,(255,255,255),bouton_parametres,0)
+    pygame.draw.rect(screen,bouton_ranger_lettres_color,bouton_ranger_lettres_rect,0)
+    pygame.draw.rect(screen,bouton_defausser_color,bouton_defausser_rect,0)
     screen.blit(image_bouton_parametres,(1050,5))
     screen.blit(img_plateau,coord_plateau) # placement du plateau
 
@@ -395,7 +397,7 @@ while running :
 
             entree = 0
             # Defausser des lettres
-            if 0:
+            if bouton_defausser_rect.collidepoint(event.pos):
                 if defaussage == False:
                     defaussage = True
                     for i in range(7):
@@ -411,7 +413,7 @@ while running :
 
 
             # Ranger les lettres
-            if 0:
+            if bouton_ranger_lettres_rect.collidepoint(event.pos):
                 for i in range(7):
                     lettre = J_lettres[i]
                     if type(lettre) == tuple:
