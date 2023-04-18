@@ -11,6 +11,9 @@ if  pygame.display.Info().current_h < 933 : # Taille barre des taches = 84
 else :
     screen_size = (1080, 849)
     format_ecran = 1
+
+screen_size = (1080, 751)
+format_ecran = 0
 screen = pygame.display.set_mode(screen_size)
 
 # Définition du plateau
@@ -22,12 +25,40 @@ if format_ecran == 0 :
     coord_plateau = (98,0)
     coord_chevalet = (20,0)
     chevalet_rect = pygame.Rect(coord_chevalet[0] ,coord_chevalet[1], 58, 751) # chevalet
-    bouton_valider_rect = pygame.Rect(915,701,100,40)
+    bouton_valider_coordonnees = (905,665)
+
+    bouton_valider_width = 120
+    bouton_valider_heigth = 40
+    bouton_valider_color = (0,153,102)
+    bouton_valider_rect = pygame.Rect(bouton_valider_coordonnees[0],bouton_valider_coordonnees[1],bouton_valider_width,bouton_valider_heigth)
+
+    bouton_defausser_coordonnees = (905,450)
+    bouton_defausser_width = 120
+    bouton_defausser_heigth = 40
+    bouton_defausser_color = (255,0,0)
+    bouton_defausser_rect = pygame.Rect(bouton_defausser_coordonnees[0],bouton_defausser_coordonnees[1],bouton_defausser_width,bouton_defausser_heigth)
+
+    bouton_ranger_lettres_coordonnees = (840,633)
+    bouton_ranger_lettres_width = 60
+    bouton_ranger_lettres_heigth = 50
+    bouton_ranger_lettres_color = (0,89,255)
+    bouton_ranger_lettres_rect = pygame.Rect(bouton_ranger_lettres_coordonnees[0],bouton_ranger_lettres_coordonnees[1],bouton_ranger_lettres_width,bouton_ranger_lettres_heigth)
 else :
     coord_plateau = (0,0)
     coord_chevalet = (0,771)
     chevalet_rect = pygame.Rect(coord_chevalet[0] ,coord_chevalet[1] ,752,58) # chevalet
-    bouton_valider_rect = pygame.Rect(915,701,100,40)
+
+    bouton_valider_coordonnees = (840,741)
+    bouton_valider_width = 150
+    bouton_valider_heigth = 50
+    bouton_valider_color = (0,153,102)
+    bouton_valider_rect = pygame.Rect(bouton_valider_coordonnees[0],bouton_valider_coordonnees[1],bouton_valider_width,bouton_valider_heigth)
+
+    bouton_ranger_lettres_coordonnees = (840,633)
+    bouton_ranger_lettres_width = 60
+    bouton_ranger_lettres_heigth = 50
+    bouton_ranger_lettres_color = (0,89,255)
+    bouton_ranger_lettres_rect = pygame.Rect(bouton_ranger_lettres_coordonnees[0],bouton_ranger_lettres_coordonnees[1],bouton_ranger_lettres_width,bouton_ranger_lettres_heigth)
 
 # Création liste des coordonnées de toute les cases
 coord_case_plateau = [[(coord_plateau[0]+1+50*i , coord_plateau[1]+1+50*j) for j in range(15)] for i in range(15)] # plateau
