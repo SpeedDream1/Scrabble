@@ -65,6 +65,7 @@ def get_mot(coord, sens):
 
 premier_tour = True
 new_tour = True
+defaussage = False
 tour = 0
 J_lettres = []
 
@@ -237,15 +238,19 @@ while running :
                     else: # si elle etait sur son chevalet
                         placer_lettre(J_lettres_img[i_lettre], "chevalet", (i_lettre,))
 
-            mvt_lettre = (False,0)
-            afficher_plateau()
-            print(J_lettres)
+                mvt_lettre = (False,0)
 
         # Clic gauche pressé 
         elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 : 
             for i, lettre in enumerate(J_lettres_img):
                 if lettre.position.collidepoint(event.pos): # Si le curseur est sur une lettre
-                    mvt_lettre = (True,i)
+                    if defaussage:
+                        if J_lettres[i] != '^':
+                            J_lettres[i] = '^' # lettres à remplacer
+                        else:
+                            J_lettres[i] = joueurs[tour][1][i]
+                    else: # Sinon la lettre est prise
+                        mvt_lettre = (True,i)
                     break
             
             # validation du mot
@@ -394,24 +399,18 @@ while running :
             entree = 0
             # Defausser des lettres
             if bouton_defausser_rect.collidepoint(event.pos):
-                for i in range(7):
-                    lettre = J_lettres[i]
-                    if type(lettre) == tuple: # ranger les lettres
-                        plateau[lettre[0]][lettre[1]] = '/'
-                        placer_lettre(J_lettres_img[i],"chevalet",(i,))
-                J_lettres = list(joueurs[tour][1])
+                if defaussage == False:
+                    defaussage = True
+                    for i in range(7):
+                        lettre = J_lettres[i]
+                        if type(lettre) == tuple: # ranger les lettres
+                            plateau[lettre[0]][lettre[1]] = '/'
+                            placer_lettre(J_lettres_img[i],"chevalet",(i,))
+                    J_lettres = list(joueurs[tour][1])
 
-                entree = '0'
-                print(*J_lettres, end=' - ')
-                while entree != '':
-                    entree = input("Lettre à defausser: ")
-                    if entree.isdigit():
-                        if J_lettres[int(entree)] != '^':
-                            J_lettres[int(entree)] = '^' # lettres à remplacer
-                        else:
-                            J_lettres[int(entree)] = joueurs[tour][1][int(entree)]
-                    print(*J_lettres, end=' - ')
-                new_tour = True
+                else:
+                    defaussage = False
+                    new_tour = True
 
 
             # Ranger les lettres
