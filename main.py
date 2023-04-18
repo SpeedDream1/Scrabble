@@ -142,6 +142,7 @@ while running :
     pygame.draw.rect(screen,(255,255,255),bouton_parametres,0)
     pygame.draw.rect(screen,bouton_ranger_lettres_color,bouton_ranger_lettres_rect,0)
     pygame.draw.rect(screen,bouton_defausser_color,bouton_defausser_rect,0)
+    pygame.draw.rect(screen,bouton_passer_tour_color,bouton_passer_tour_rect,0)
     screen.blit(image_bouton_parametres,(1050,5))
     screen.blit(img_plateau,coord_plateau) # placement du plateau
 
