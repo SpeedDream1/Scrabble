@@ -464,6 +464,3 @@ def play() :
             if mvt_lettre[0]:
                 (x, y) = pygame.mouse.get_pos()
                 J_lettres_img[mvt_lettre[1]].position.topleft = (x, y)
-
-
-play()
