@@ -194,9 +194,12 @@ while running :
     # Placement des lettres
     for img in lettres_grises:
         screen.blit(img.image_grise , img.position)
-    for img in J_lettres_img:
+    for i, img in enumerate(J_lettres_img):
         if img != '_' and (not mvt_lettre[0] or img != mvt_lettre[1]):
-            screen.blit(img.image , img.position)
+            if defaussage and J_lettres[i] == '^':
+                screen.blit(img.image_defausse , img.position)
+            else:
+                screen.blit(img.image , img.position)
     if mvt_lettre[0]: # on met la lettre tenue au premier plan
         img = J_lettres_img[mvt_lettre[1]]
         screen.blit(img.image , img.position)
