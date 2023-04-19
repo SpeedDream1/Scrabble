@@ -12,7 +12,7 @@ from interface_play import *
 
 
 def play() :
-    nb_joueur = 2 # int(input("nombre de joueurs: "))
+    nb_joueur = 4 # int(input("nombre de joueurs: "))
 
     pioche = []  # initialisation de la pioche
     for key, value in QTT_LETTRES.items():

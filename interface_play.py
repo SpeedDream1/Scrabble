@@ -128,36 +128,39 @@ def affichage_score(joueurs,tour) :
     if format_ecran==0 :
         y = 0
         score_joueur_coord = {}
-        for i in score :
+        for i in range(1,len(joueurs)) :
             arriere_plan_score_coordonnees = (879,0+y)
-            score_joueur_coord[i[0]] = arriere_plan_score_coordonnees
+            score_joueur_coord[i] = arriere_plan_score_coordonnees
             arriere_plan_score_width = 201
             arriere_plan_score_heigth = 50
-            if i[0] == tour :
+            if i == tour :
                 arriere_plan_score_color = (75,75,75)
             else :
                 arriere_plan_score_color = (255,255,255)
             arriere_plan_score_rect = pygame.Rect(arriere_plan_score_coordonnees[0],arriere_plan_score_coordonnees[1],arriere_plan_score_width,arriere_plan_score_heigth)
-            score_joueur_text = police_38.render(f"Joueur {i[0]} : {i[1]}",True,(0,0,0))
+            score_joueur_text = police_38.render(f"Joueur {i} : {joueurs[i][0]}",True,(0,0,0))
             score_joueur_text_rect = score_joueur_text.get_rect(center=arriere_plan_score_rect.center)
             pygame.draw.rect(screen,arriere_plan_score_color,arriere_plan_score_rect)
             screen.blit(score_joueur_text,score_joueur_text_rect)
             y+=50
         y=0
-        for i in range(1,len(score)+1) :
-            classement_coord = (849,0+y)
+        j=1
+        for i in score :
+            y = i[0]*50-50
+            classement_coord = (849,y)
             classement_width = 30
             classement_heigth = 50
-            if i<=3 :
-                classement_color = couleur_classement[i]
+            if j<=3 :
+                classement_color = couleur_classement[j]
             else :
                 classement_color = (220,220,220)
             classement_rect = pygame.Rect(classement_coord[0],classement_coord[1],classement_width,classement_heigth)
-            classement_text = police_38.render(f"{i}.",True,(0,0,0))
+            classement_text = police_38.render(f"{j}.",True,(0,0,0))
             classement_text_rect = classement_text.get_rect(center=classement_rect.center)
             pygame.draw.rect(screen,classement_color,classement_rect)
             screen.blit(classement_text,classement_text_rect)
             y+=50
+            j+=1
 
     else :
         y = 0
@@ -179,20 +182,23 @@ def affichage_score(joueurs,tour) :
             y+=50
         
         y=0
-        for i in range(1,len(score)+1) :
-            classement_coord = (751,0+y)
+        j=1
+        for i in score :
+            y = i[0]*50-50
+            classement_coord = (751,y)
             classement_width = 30
             classement_heigth = 50
-            if i<=3 :
-                classement_color = couleur_classement[i]
+            if j<=3 :
+                classement_color = couleur_classement[j]
             else :
                 classement_color = (220,220,220)
             classement_rect = pygame.Rect(classement_coord[0],classement_coord[1],classement_width,classement_heigth)
-            classement_text = police_48.render(f"{i}.",True,(0,0,0))
+            classement_text = police_38.render(f"{j}.",True,(0,0,0))
             classement_text_rect = classement_text.get_rect(center=classement_rect.center)
             pygame.draw.rect(screen,classement_color,classement_rect)
             screen.blit(classement_text,classement_text_rect)
             y+=50
+            j+=1
     
 
     
