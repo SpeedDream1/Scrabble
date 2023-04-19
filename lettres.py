@@ -5,14 +5,9 @@ class Lettre (pygame.sprite.Sprite) :
     def __init__(self, lettre) :
         super().__init__()
 
-        if lettre in ['I', 'O', 'Q', 'W']:
-            format_img = "png"
-        else:
-            format_img = "jpg"
-
-        image = "assets\lettres\\{}.{}".format(lettre, format_img)
-        image_grise = "assets\\lettres_grises\\{}.{}".format(lettre, format_img)
-        image_defausse = "assets\\lettres_rouges\\{}.{}".format(lettre, format_img)
+        image = "assets\lettres\\{}.png".format(lettre)
+        image_grise = "assets\\lettres_grises\\{}.png".format(lettre)
+        image_defausse = "assets\\lettres_rouges\\{}.png".format(lettre)
 
         self.image = pygame.image.load(image)
         self.image_grise = pygame.image.load(image_grise)
