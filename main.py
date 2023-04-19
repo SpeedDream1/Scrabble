@@ -437,7 +437,7 @@ while running :
 
 
             # Passer son tour
-            if 0:
+            if bouton_passer_tour_rect.collidepoint(event.pos):
                 new_tour = True
 
 
