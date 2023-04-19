@@ -1,13 +1,16 @@
 import pygame
 
+# Lancement de l'interface
 pygame.init()
 pygame.display.set_caption("Menu")
-# Interface
+
+# Police de texte
 police_28 = pygame.font.Font(None,28)
 police_32 = pygame.font.Font(None,32)
 police_48 = pygame.font.Font(None,48)
 police_38 = pygame.font.Font(None,38)
 
+# Définition de la fenetre du jeu
 if  pygame.display.Info().current_h < 933 : # Taille barre des taches = 84
     screen_size = (1080, 751)
     format_ecran = 0
@@ -17,6 +20,7 @@ else :
 
 screen = pygame.display.set_mode(screen_size)
 
+# Coordonnées des éléments graphiques
 if format_ecran == 0 :
     bouton_play_coordonnees = (290,70)
     bouton_play_width = 500
@@ -51,6 +55,7 @@ if format_ecran == 0 :
     bouton_exit_text_rect = bouton_exit_text.get_rect(center=bouton_exit_rect.center)
 
 else :
+    
     bouton_play_coordonnees = (290,90)
     bouton_play_width = 500
     bouton_play_heigth = 100
@@ -83,3 +88,19 @@ else :
     bouton_exit_text = police_48.render("Quitter",True,(255,255,255))
     bouton_exit_text_rect = bouton_exit_text.get_rect(center=bouton_exit_rect.center)
 
+
+def actualisation_fenetre():
+    pygame.display.flip()
+
+    screen.fill((255,255,255))
+    pygame.draw.rect(screen,bouton_play_color,bouton_play_rect,0)
+    screen.blit(bouton_play_text,bouton_play_text_rect)
+
+    pygame.draw.rect(screen,bouton_continue_game_color,bouton_continue_game_rect,0)
+    screen.blit(bouton_continue_game_text,bouton_continue_game_text_rect)
+
+    pygame.draw.rect(screen,bouton_option_color,bouton_option_rect,0)
+    screen.blit(bouton_option_text,bouton_option_text_rect)
+
+    pygame.draw.rect(screen,bouton_exit_color,bouton_exit_rect,0)
+    screen.blit(bouton_exit_text,bouton_exit_text_rect)

@@ -9,6 +9,7 @@ police_28 = pygame.font.Font(None,28)
 police_32 = pygame.font.Font(None,32)
 police_48 = pygame.font.Font(None,48)
 police_38 = pygame.font.Font(None,38)
+
 # Définition de la fenetre du jeu
 if  pygame.display.Info().current_h < 933 : # Taille barre des taches = 84
     screen_size = (1080, 751)
@@ -27,11 +28,14 @@ fond = pygame.Surface(screen.get_size())
 
 # Coordonnées des éléments graphiques
 if format_ecran == 0 :
+    
     # plateau
     coord_plateau = (98,0)
     coord_chevalet = (20,0)
+    
     # chevalet
     chevalet_rect = pygame.Rect(coord_chevalet[0] ,coord_chevalet[1], 58, 751) # chevalet
+    
     # bouton valider
     bouton_valider_coordonnees = (875,672)
     bouton_valider_width = 180
@@ -40,6 +44,7 @@ if format_ecran == 0 :
     bouton_valider_text = police_48.render("Valider",True,(255,255,255))
     bouton_valider_rect = pygame.Rect(bouton_valider_coordonnees[0],bouton_valider_coordonnees[1],bouton_valider_width,bouton_valider_heigth)
     bouton_valider_text_rect = bouton_valider_text.get_rect(center=bouton_valider_rect.center)
+    
     # bouton defausser
     bouton_defausser_coordonnees = (875,447)
     bouton_defausser_width = 180
@@ -48,6 +53,7 @@ if format_ecran == 0 :
     bouton_defausser_rect = pygame.Rect(bouton_defausser_coordonnees[0],bouton_defausser_coordonnees[1],bouton_defausser_width,bouton_defausser_heigth)
     bouton_defausser_text = police_48.render("Defausser",True,(255,255,255))
     bouton_defausser_text_rect = bouton_defausser_text.get_rect(center=bouton_defausser_rect.center)
+    
     # bouton ranger les lettres
     bouton_ranger_lettres_coordonnees = (875,522)
     bouton_ranger_lettres_width = 180
@@ -56,6 +62,7 @@ if format_ecran == 0 :
     bouton_ranger_lettres_rect = pygame.Rect(bouton_ranger_lettres_coordonnees[0],bouton_ranger_lettres_coordonnees[1],bouton_ranger_lettres_width,bouton_ranger_lettres_heigth)
     bouton_ranger_lettres_text = police_28.render("Ranger les lettres",True,(255,255,255))
     bouton_ranger_lettres_text_rect = bouton_ranger_lettres_text.get_rect(center=bouton_ranger_lettres_rect.center)
+    
     # bouton passer son tour
     bouton_passer_tour_coordonnees = (875,597)
     bouton_passer_tour_width = 180
@@ -201,5 +208,66 @@ def affichage_score(joueurs,tour) :
             j+=1
     
 
+            
+# Fonction affichage d'une lettre
+def placer_lettre (lettre, lieu, coord) :
+    if lieu == "chevalet" :  # placer_lettre (lettre,"chevalet",(n,))
+        lettre.position.topleft = coord_case_chevalet[coord[0]]
+    elif lieu == "plateau" :  #placer_lettre (lettre,"plateau",(x,y))
+        lettre.position.topleft = coord_case_plateau[coord[1]][coord[0]] # car coord inversées
+
+# Une fois qu'une lettre est placée et ne peux plus être bougée
+def griser_lettre (lettre) :
+    lettre.grise = True
+    screen.blit(lettre.image_grise, lettre.position)
+    
+# convertie des coordonnée en pixel en coordonnée de la case la plus proche
+def convert_px_coord(x, y) :
+    if coord_plateau[0] < x < coord_plateau[0]+751 and coord_plateau[1] < y < coord_plateau[1]+751 :
+        x -= coord_plateau[0]
+        y -= coord_plateau[1]
+        x = round(x/50)
+        y = round(y/50)
+        if x == 15 :
+            x = 14
+        if y == 15 :
+            y = 14
+        return "plateau", (y, x)  # car coord inversées
+    elif format_ecran == 0 and coord_chevalet[0] < x < coord_chevalet[0]+58 and coord_chevalet[1] < y < coord_chevalet[1]+751:
+        y -= coord_chevalet[1]
+        if y > 652 :
+            y = 652
+        return "chevalet", (0, y//100)
+    elif format_ecran == 1 and coord_chevalet[0] < x < coord_chevalet[0]+752 and coord_chevalet[1] < y < coord_chevalet[1]+58:
+        x -= coord_chevalet[0]
+        if x > 652 :
+            x = 652
+        return "chevalet", (0, x//100)
+    else:
+        return "en dehors", 0   
     
     
+def actualisation_fenetre():
+    pygame.display.flip() # MaJ de la fenêtre
+        
+    # Affichage de la fenêtre
+    screen.fill((255,255,255))
+    # Plateau
+    screen.blit(img_plateau,coord_plateau)
+    # Chevalet
+    pygame.draw.rect(screen,(100,100,100),chevalet_rect,0)
+    # Bouton Valider
+    pygame.draw.rect(screen,bouton_valider_color,bouton_valider_rect,0)
+    screen.blit(bouton_valider_text,bouton_valider_text_rect)
+    # Bouton parametres
+    pygame.draw.rect(screen,(255,255,255),bouton_parametres,0)
+    screen.blit(image_bouton_parametres,(1050,5))
+    # Bouton Rangement des lettres
+    pygame.draw.rect(screen,bouton_ranger_lettres_color,bouton_ranger_lettres_rect,0)
+    screen.blit(bouton_ranger_lettres_text,bouton_ranger_lettres_text_rect)
+    # Bouton Deffausser les lettres
+    pygame.draw.rect(screen,bouton_defausser_color,bouton_defausser_rect,0)
+    screen.blit(bouton_defausser_text,bouton_defausser_text_rect)
+    # Bouton Passer son tour
+    pygame.draw.rect(screen,bouton_passer_tour_color,bouton_passer_tour_rect,0)
+    screen.blit(bouton_passer_tour_text,bouton_passer_tour_text_rect)
