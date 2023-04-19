@@ -17,8 +17,8 @@ else :
     screen_size = (1080, 849)
     format_ecran = 1
 
-screen_size = (1080, 849)
-format_ecran = 1
+#screen_size = (1080, 849)
+#format_ecran = 1
 screen = pygame.display.set_mode(screen_size)
 
 # Définition du plateau
