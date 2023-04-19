@@ -135,7 +135,7 @@ def afficher_plateau(): # fonction pour visualiser le plateau
 while running :
 
     pygame.display.flip() # MaJ de la fenêtre
-
+    
     # Affichage de la fenêtre
     screen.fill((255,255,255))
     # Plateau
@@ -157,7 +157,8 @@ while running :
     # Bouton Passer son tour
     pygame.draw.rect(screen,bouton_passer_tour_color,bouton_passer_tour_rect,0)
     screen.blit(bouton_passer_tour_text,bouton_passer_tour_text_rect)
-
+    
+    
 
 
     # Si c'est un nouveau tour
@@ -203,7 +204,8 @@ while running :
     if mvt_lettre[0]: # on met la lettre tenue au premier plan
         img = J_lettres_img[mvt_lettre[1]]
         screen.blit(img.image , img.position)
-
+    # Affichage des scores
+    affichage_score(joueurs,tour)
 
     # Evenements
     for event in pygame.event.get() :
