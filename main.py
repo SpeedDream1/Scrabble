@@ -396,6 +396,9 @@ while running :
                         elif mult == 'T' or mult == 'T*':
                             points_mot *=3
                     points += points_mot
+                if len(lettres_placees) == 7:
+                    points += 50
+                    
                 print("points gagnés:", points)
                 joueurs[tour][0] += points
 
