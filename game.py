@@ -189,6 +189,8 @@ def play_game() :
             # Clic gauche pressé 
             elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 : 
                 for i, lettre in enumerate(J_lettres_img):
+                    if J_lettres[i] == '_':
+                        continue
                     if lettre.position.collidepoint(event.pos): # Si le curseur est sur une lettre
                         if defaussage:
                             if J_lettres[i] != '^':
@@ -345,10 +347,12 @@ def play_game() :
                     if premier_tour:
                         premier_tour = False
 
-                entree = 0
                 # Defausser des lettres
-                if bouton_defausser_rect.collidepoint(event.pos):
+                elif bouton_defausser_rect.collidepoint(event.pos):
                     if defaussage == False:
+                        if len(pioche) < 7:
+                            print("Vous ne pouvez pas défausser si il reste moins de 7 cases dans la pioche")
+                            continue
                         defaussage = True
                         for i in range(7):
                             lettre = J_lettres[i]
@@ -363,7 +367,7 @@ def play_game() :
 
 
                 # Ranger les lettres
-                if bouton_ranger_lettres_rect.collidepoint(event.pos):
+                elif bouton_ranger_lettres_rect.collidepoint(event.pos):
                     for i in range(7):
                         lettre = J_lettres[i]
                         if type(lettre) == tuple:
@@ -373,12 +377,13 @@ def play_game() :
 
 
                 # Passer son tour
-                if bouton_passer_tour_rect.collidepoint(event.pos):
+                elif bouton_passer_tour_rect.collidepoint(event.pos):
                     new_tour = True
 
-
-                # Commandes admin
-                if 0:
+            # Commandes admin
+            elif event.type == pygame.KEYDOWN:
+                touches_press = pygame.key.get_pressed()
+                if touches_press[97] and touches_press[100] and touches_press[105] and touches_press[109] and touches_press[110]:
                     command = input("Admin: V - vider pioche : ").upper()
 
                     if command == 'V': # vider la pioche
