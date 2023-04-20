@@ -5,16 +5,14 @@ from data import *
 from trouver_mot import *
 from lettres import *
 
+# Interface
 from interface_game import *
-
-
 
 # ______________________________________[préparation de la partie]__________________________________________
 
 
-
 def play_game() :
-    nb_joueur = 2 # int(input("nombre de joueurs: "))
+    nb_joueur = 4 # int(input("nombre de joueurs: "))
 
     pioche = []  # initialisation de la pioche
     for key, value in QTT_LETTRES.items():
@@ -76,19 +74,95 @@ def play_game() :
 
 
 
-# ______________________________________[Lancement de la fenêtre]__________________________________________
+    # ______________________________________[préparation de l'interface]__________________________________________
 
 
+
+
+    # convertie des coordonnée en pixel en coordonnée de la case la plus proche
+    def convert_px_coord(x, y) :
+        if coord_plateau[0] < x < coord_plateau[0]+751 and coord_plateau[1] < y < coord_plateau[1]+751 :
+            x -= coord_plateau[0]
+            y -= coord_plateau[1]
+            x = round(x/50)
+            y = round(y/50)
+            if x == 15 :
+                x = 14
+            if y == 15 :
+                y = 14
+            return "plateau", (y, x)  # car coord inversées
+        elif format_ecran == 0 and coord_chevalet[0] < x < coord_chevalet[0]+58 and coord_chevalet[1] < y < coord_chevalet[1]+751:
+            y -= coord_chevalet[1]
+            if y > 652 :
+                y = 652
+            return "chevalet", (0, y//100)
+        elif format_ecran == 1 and coord_chevalet[0] < x < coord_chevalet[0]+752 and coord_chevalet[1] < y < coord_chevalet[1]+58:
+            x -= coord_chevalet[0]
+            if x > 652 :
+                x = 652
+            return "chevalet", (0, x//100)
+        else:
+            return "en dehors", 0   
+        
+    # Fonction affichage d'une lettre
+    def placer_lettre (lettre, lieu, coord) :
+        if lieu == "chevalet" :  # placer_lettre (lettre,"chevalet",(n,))
+            lettre.position.topleft = coord_case_chevalet[coord[0]]
+        elif lieu == "plateau" :  #placer_lettre (lettre,"plateau",(x,y))
+            lettre.position.topleft = coord_case_plateau[coord[1]][coord[0]] # car coord inversées
+
+    # Une fois qu'une lettre est placée et ne peux plus être bougée
+    def griser_lettre (lettre) :
+        lettre.grise = True
+        screen.blit(lettre.image_grise, lettre.position)
 
     # Variables essentielles au lancement du jeu
     running = True
     mvt_lettre = (False,0)
     lettres_grises = []
 
+
+    # ______________________________________[Lancement de la fenêtre]__________________________________________
+
+
+    def afficher_plateau(): # fonction pour visualiser le plateau
+        print('\n   ', end='')
+        for i in range(15):
+            print((str(i)+' ')[:2], end='')
+        print()
+        for i in range(15):
+            print((str(i)+' ')[:2], *plateau[i], sep = ' ')
+
+
     while running :
+
+        pygame.display.flip() # MaJ de la fenêtre
         
-        actualisation_fenetre()
+        # Affichage de la fenêtre
+        screen.fill((255,255,255))
+        # Plateau
+        screen.blit(img_plateau,coord_plateau)
+        # Chevalet
+        pygame.draw.rect(screen,(100,100,100),chevalet_rect,0)
+        # Bouton Valider
+        pygame.draw.rect(screen,bouton_valider_color,bouton_valider_rect,0)
+        screen.blit(bouton_valider_text,bouton_valider_text_rect)
+        # Bouton parametres
+        pygame.draw.rect(screen,(255,255,255),bouton_parametres,0)
+        screen.blit(image_bouton_parametres,(1050,5))
+        # Bouton Rangement des lettres
+        pygame.draw.rect(screen,bouton_ranger_lettres_color,bouton_ranger_lettres_rect,0)
+        screen.blit(bouton_ranger_lettres_text,bouton_ranger_lettres_text_rect)
+        # Bouton Deffausser les lettres
+        pygame.draw.rect(screen,bouton_defausser_color,bouton_defausser_rect,0)
+        screen.blit(bouton_defausser_text,bouton_defausser_text_rect)
+        # Bouton Passer son tour
+        pygame.draw.rect(screen,bouton_passer_tour_color,bouton_passer_tour_rect,0)
+        screen.blit(bouton_passer_tour_text,bouton_passer_tour_text_rect)
         
+        
+
+
         # Si c'est un nouveau tour
         if new_tour:
             if '^' in J_lettres: # si il y a des lettres à remplacer
