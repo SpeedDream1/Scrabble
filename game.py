@@ -1,4 +1,4 @@
-from random import randrange
+from random import randrange, shuffle
 import pygame
 
 from data import *
@@ -21,6 +21,7 @@ def play_game() :
     pioche = []  # initialisation de la pioche
     for key, value in QTT_LETTRES.items():
         pioche.extend([str(key)]*value)
+    shuffle(pioche)
 
     def piocher():
         return pioche.pop(randrange(len(pioche)))
@@ -95,7 +96,14 @@ def play_game() :
         # Si c'est un nouveau tour
         if new_tour:
             if '^' in J_lettres: # si il y a des lettres à remplacer
-                i = 0
+                
+                if defaussage:
+                    defaussage = False
+                    for i in range(7): # on remet les lettres défaussées dans la pioche
+                        if J_lettres[i] == '^':
+                            pioche.insert(randrange(len(pioche)), joueurs[tour][1][i])
+
+                i = 0   
                 for l in J_lettres: # on décale les lettres qui restent à gauche
                     if l != '^':
                         joueurs[tour][1][i] = l
@@ -231,9 +239,11 @@ def play_game() :
                 if bouton_valider_rect.collidepoint(event.pos):
                     
                     if defaussage:
-                        defaussage = False
-                        set_mode_defaussage(False)
-                        new_tour = True
+                        if '^' in J_lettres:
+                            set_mode_defaussage(False)
+                            new_tour = True
+                        else:
+                            print("Vous devez selectionner au moins une lettre")
                         continue
 
                     valide = True
@@ -381,7 +391,7 @@ def play_game() :
 
                 # Defausser des lettres
                 elif bouton_defausser_rect.collidepoint(event.pos):
-                    
+
                     if defaussage == False:
                         if len(pioche) < 7:
                             print("Vous ne pouvez pas défausser si il reste moins de 7 cases dans la pioche")
