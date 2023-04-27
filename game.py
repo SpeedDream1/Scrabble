@@ -202,6 +202,8 @@ def play_game() :
                             J_lettres[i_lettre], J_lettres[pos] = J_lettres[pos], J_lettres[i_lettre]
                             J_lettres_img[i_lettre], J_lettres_img[pos] = J_lettres_img[pos], J_lettres_img[i_lettre]
                             joueurs[tour][1][i_lettre], joueurs[tour][1][pos] = joueurs[tour][1][pos], joueurs[tour][1][i_lettre]
+                        else:
+                            placer_lettre(J_lettres_img[i_lettre], "chevalet", (i_lettre,))
 
                     elif emplacement == "plateau" and plateau[coord[0]][coord[1]] == "/": # si on place la lettre sur le plateau
                         
