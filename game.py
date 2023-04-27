@@ -74,6 +74,8 @@ def play_game() :
     premier_tour = True
     new_tour = True
     defaussage = False
+    saut_tour_affile = 0
+    saut_tour = False
     tour = 0
     J_lettres = []
     running = True
@@ -83,7 +85,8 @@ def play_game() :
 
     # ______________________________________[Lancement de la partie]__________________________________________
 
-
+    #for i in range(70):
+    #    piocher()
 
     while running :
 
@@ -104,6 +107,16 @@ def play_game() :
                     else:
                         joueurs[tour][1][i] = "_" # lettre vide si la pioche est vide
                     i += 1
+                
+                if joueurs[tour][1] == ['_','_','_','_','_','_','_'] and pioche == []:
+                    running == False # pioche et main d'un joueur vide = fin de la partie
+                    cumul = 0
+                    for i in range(1,nb_joueur+1):
+                        valeur_reste = sum([POINT_LETTRE[i] for i in joueurs[i][1] if i != '_'])
+                        joueurs[i][0] -= valeur_reste # chaque autre joueur déduit la valeur de ses lettres
+                        cumul += valeur_reste
+                    joueurs[tour][0] += cumul # le joueur ayant finit récupère tout ces points
+                    break   # FIN DE PARTIE
 
             else: 
                 for i in range(len(J_lettres)):
@@ -111,6 +124,18 @@ def play_game() :
                     if type(lettre) == tuple:
                         plateau[lettre[0]][lettre[1]] = '/'
 
+            if not saut_tour: # on compte le nombre de saut de tour d'affilé
+                saut_tour_affile = 0
+            else:
+                saut_tour_affile += 1
+                saut_tour = False
+                if len(pioche) < 7 and saut_tour_affile == nb_joueur*3:
+                    running == False # les joueurs ne peuvent plus jouer: fin de la partie
+                    for i in range(1,nb_joueur+1):
+                        valeur_reste = sum([POINT_LETTRE[i] for i in joueurs[i][1] if i != '_'])
+                        joueurs[i][0] -= valeur_reste # chaque autre joueur déduit la valeur de ses lettres
+                    break   # FIN DE PARTIE
+            
             tour = tour%nb_joueur + 1 # au joueur suivant
 
             J_lettres = list(joueurs[tour][1]) # récuperer les lettres du joueur
@@ -164,12 +189,13 @@ def play_game() :
                         if i_lettre != pos: # puis on échange
                             placer_lettre(J_lettres_img[i_lettre], "chevalet", (pos,))
                             if type(J_lettres[pos]) != tuple: # si l'autre lettre est sur le chevalet
-                                placer_lettre(J_lettres_img[pos], "chevalet", (i_lettre,))
+                                if J_lettres[pos] != '_':
+                                    placer_lettre(J_lettres_img[pos], "chevalet", (i_lettre,))
                             J_lettres[i_lettre], J_lettres[pos] = J_lettres[pos], J_lettres[i_lettre]
                             J_lettres_img[i_lettre], J_lettres_img[pos] = J_lettres_img[pos], J_lettres_img[i_lettre]
                             joueurs[tour][1][i_lettre], joueurs[tour][1][pos] = joueurs[tour][1][pos], joueurs[tour][1][i_lettre]
 
-                    if emplacement == "plateau" and plateau[coord[0]][coord[1]] == "/": # si on place la lettre sur le plateau
+                    elif emplacement == "plateau" and plateau[coord[0]][coord[1]] == "/": # si on place la lettre sur le plateau
                         
                         if type(J_lettres[i_lettre]) == tuple: # si la lettre est sur le plateau
                             old_coord = J_lettres[i_lettre]
@@ -378,6 +404,7 @@ def play_game() :
 
                 # Passer son tour
                 elif bouton_passer_tour_rect.collidepoint(event.pos):
+                    saut_tour = True
                     new_tour = True
 
             # Commandes admin
