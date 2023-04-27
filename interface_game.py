@@ -208,7 +208,29 @@ def affichage_score(joueurs,tour) :
             j+=1
     
 
+# Changer les boutons pour le mode defaussage
+def set_mode_defaussage(set=True):
+    if set:
+        global bouton_defausser_text
+        global bouton_defausser_text_rect
+        global bouton_passer_tour_text
+        global bouton_passer_tour_text_rect
+
+        bouton_defausser_text = police_48.render("Annuler",True,(255,255,255))
+        bouton_defausser_text_rect = bouton_defausser_text.get_rect(center=bouton_defausser_rect.center)
+
+        bouton_passer_tour_text = police_28.render("Annuler et passer",True,(255,255,255))
+        bouton_passer_tour_text_rect = bouton_passer_tour_text.get_rect(center=bouton_passer_tour_rect.center)
+
+    else:
+
+        bouton_defausser_text = police_48.render("Defausser",True,(255,255,255))
+        bouton_defausser_text_rect = bouton_defausser_text.get_rect(center=bouton_defausser_rect.center)
+
+        bouton_passer_tour_text = police_32.render("Passer son tour",True,(255,255,255))
+        bouton_passer_tour_text_rect = bouton_passer_tour_text.get_rect(center=bouton_passer_tour_rect.center)
             
+
 # Fonction affichage d'une lettre
 def placer_lettre (lettre, lieu, coord) :
     if lieu == "chevalet" :  # placer_lettre (lettre,"chevalet",(n,))

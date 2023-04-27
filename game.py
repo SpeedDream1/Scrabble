@@ -229,6 +229,12 @@ def play_game() :
                 
                 # validation du mot
                 if bouton_valider_rect.collidepoint(event.pos):
+                    
+                    if defaussage:
+                        defaussage = False
+                        set_mode_defaussage(False)
+                        new_tour = True
+                        continue
 
                     valide = True
 
@@ -375,11 +381,15 @@ def play_game() :
 
                 # Defausser des lettres
                 elif bouton_defausser_rect.collidepoint(event.pos):
+                    
                     if defaussage == False:
                         if len(pioche) < 7:
                             print("Vous ne pouvez pas défausser si il reste moins de 7 cases dans la pioche")
                             continue
+
+                        set_mode_defaussage()
                         defaussage = True
+
                         for i in range(7):
                             lettre = J_lettres[i]
                             if type(lettre) == tuple: # ranger les lettres
@@ -388,12 +398,15 @@ def play_game() :
                         J_lettres = list(joueurs[tour][1])
 
                     else:
+                        set_mode_defaussage(False)
+                        J_lettres = list(joueurs[tour][1])
                         defaussage = False
-                        new_tour = True
 
 
                 # Ranger les lettres
                 elif bouton_ranger_lettres_rect.collidepoint(event.pos):
+                    if defaussage:
+                        continue
                     for i in range(7):
                         lettre = J_lettres[i]
                         if type(lettre) == tuple:
@@ -404,6 +417,10 @@ def play_game() :
 
                 # Passer son tour
                 elif bouton_passer_tour_rect.collidepoint(event.pos):
+                    if defaussage:
+                        set_mode_defaussage(False)
+                        J_lettres = list(joueurs[tour][1])
+                        defaussage = False
                     saut_tour = True
                     new_tour = True
 
