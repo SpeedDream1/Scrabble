@@ -262,7 +262,15 @@ def play_game() :
                     jokers = ['']*7
                     for i, lettre in enumerate(J_lettres):
                         if type(lettre) == tuple and joueurs[tour][1][i] == '*':
-                            jokers[i] = input("* = ")
+                            print("entrez la lettres que le joker remplace")
+                            set_mode_joker()
+                            while event.type != pygame.KEYDOWN: # le joueur choisit la lettre
+                                for event in pygame.event.get():
+                                    if event.type == pygame.KEYDOWN:
+                                        print(pygame.key.name(event.key))
+                                        jokers[i] = pygame.key.name(event.key).upper()
+                                        break
+                            set_mode_joker(False)
 
                     # au premier tour la case du milieu doit être recouverte
                     if premier_tour:
@@ -381,10 +389,10 @@ def play_game() :
                         if type(lettre) == tuple:
                             if jokers[i] != "":
                                 plateau[lettre[0]][lettre[1]] = jokers[i]
-                                # a faire
+                                J_lettres_img[i].joker_lettre_selection(jokers[i])
                             else:
                                 plateau[lettre[0]][lettre[1]] = list(joueurs[tour][1])[i]
-                                lettres_grises.append(J_lettres_img[i])
+                            lettres_grises.append(J_lettres_img[i])
                             J_lettres[i] = '^' # lettres à remplacer
 
                     new_tour = True
