@@ -10,28 +10,74 @@ from interface_game import *
 
 
 
-def play_game() :
+def play_game(nbJoueur,charger=False) :
 
     # ______________________________________[préparation de la partie]__________________________________________
 
 
+    if charger:
 
-    nb_joueur = 4 # int(input("nombre de joueurs: "))
+        with open("sauvegarde.txt", 'r') as fichier:
+            chargement = fichier.readlines()
 
-    pioche = []  # initialisation de la pioche
-    for key, value in QTT_LETTRES.items():
-        pioche.extend([str(key)]*value)
-    shuffle(pioche)
+        nb_joueur = int(chargement[0][0])
+        tour = int(chargement[0][1])
+        pioche = eval(chargement[1][:-1])
+        joueurs = eval(chargement[2][:-1])
+        plateau = eval(chargement[3][:-1])
+        saut_tour_affile = eval(chargement[4][:-1])
+        premier_tour = eval(chargement[5][:-1])
 
-    def piocher():
-        return pioche.pop(randrange(len(pioche)))
+        lettres_grises = []
+        for lig in range(15):
+            for col in range(15):
+                case = plateau[lig][col]
+                if case != '/':
+                    lettres_grises.append(Lettre(case))
+                    placer_lettre(lettres_grises[-1], "plateau", (lig, col))
 
-    # initialisation des joueurs: [score, lettres]
-    joueurs = [''] + [[0, [piocher() for _ in range(7)]] for i in range(nb_joueur)]
+        new_tour = False
+        defaussage = False
+        saut_tour = False
+        J_lettres = list(joueurs[tour][1]) # récuperer les lettres du joueur
+        J_lettres_img = [Lettre(i) if i != '_' else '_' for i in J_lettres]
+        for i, lettre in enumerate(J_lettres_img):
+            if lettre != '_':
+                placer_lettre(J_lettres_img[i],"chevalet",(i,))
+        new_tour = False
+        
+        def piocher():
+            return pioche.pop(randrange(len(pioche)))
 
-    # initialisation du plateau
-    plateau = [list(i) for i in PLATEAU_DEPART]
+    else:
 
+        nb_joueur = 4 # int(input("nombre de joueurs: "))
+
+        pioche = []  # initialisation de la pioche
+        for key, value in QTT_LETTRES.items():
+            pioche.extend([str(key)]*value)
+        shuffle(pioche)
+
+        def piocher():
+            return pioche.pop(randrange(len(pioche)))
+        
+        # initialisation des joueurs: [score, lettres]
+        joueurs = [''] + [[0, [piocher() for _ in range(7)]] for i in range(nb_joueur)]
+
+        # initialisation du plateau
+        plateau = [list(i) for i in PLATEAU_DEPART]
+
+        # Variables essentielles au lancement du jeu
+        premier_tour = True
+        new_tour = True
+        defaussage = False
+        saut_tour_affile = 0
+        saut_tour = False
+        tour = 0
+        J_lettres = []
+        lettres_grises = []
+
+    
     # Trouver un mot à partir des coordonnés d'une case et de la direction
     def get_mot(coord, sens): 
         ligne = coord[0]   
@@ -71,18 +117,17 @@ def play_game() :
             # mot = get_lettres(coord_min, colonne, sens, coord_max-coord_min+1)
         return mot
 
-    # Variables essentielles au lancement du jeu
-    premier_tour = True
-    new_tour = True
-    defaussage = False
-    saut_tour_affile = 0
-    saut_tour = False
-    tour = 0
-    J_lettres = []
+    def save():
+        with open("sauvegarde.txt", 'w') as fichier:
+            fichier.write(str(nb_joueur)+str(tour)+"\n")
+            fichier.write(str(pioche)+"\n")
+            fichier.write(str(joueurs)+"\n")
+            fichier.write(str(plateau)+"\n")
+            fichier.write(str(saut_tour_affile)+"\n")
+            fichier.write(str(premier_tour)+"\n")
+
     running = True
     mvt_lettre = (False,0)
-    lettres_grises = []
-
 
     # ______________________________________[Lancement de la partie]__________________________________________
 
@@ -152,6 +197,8 @@ def play_game() :
                 if lettre != '_':
                     placer_lettre(J_lettres_img[i],"chevalet",(i,))
             new_tour = False
+            
+            save()
 
         # Placement des lettres
         for img in lettres_grises:
@@ -461,4 +508,4 @@ def play_game() :
                 J_lettres_img[mvt_lettre[1]].position.topleft = (x, y)
 
 if __name__ == "__main__":
-    play_game()
+    play_game(4)

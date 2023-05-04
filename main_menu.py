@@ -18,7 +18,12 @@ while running :
 
         elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 :
             if bouton_play_rect.collidepoint(event.pos) :
-                play_game()
+                nbJoueurs = 4
+                play_game(nbJoueurs)
+            
+            elif bouton_continue_game_rect.collidepoint(event.pos):
+                nbJoueurs = 4
+                play_game(nbJoueurs, charger=True)
 
             elif bouton_exit_rect.collidepoint(event.pos) :
                 running = False
