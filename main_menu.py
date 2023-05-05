@@ -3,22 +3,12 @@ from game import play_game
 from interface_main_menu import *
 
 pygame.init()
-
+is_save = set_bouton_continue()
 
 running = True
 while running :
 
-    try:
-        with open("sauvegarde.txt", mode='r') as fichier:
-            texte = fichier.read()
-            if  texte == "None":
-                is_save = False
-            else:
-                is_save = True
-    except FileNotFoundError:
-        is_save = False
-
-    actualisation_fenetre(is_save)
+    actualisation_fenetre()
 
     for event in pygame.event.get() :
         # Quitter le jeu
@@ -30,10 +20,13 @@ while running :
             if bouton_play_rect.collidepoint(event.pos) :
                 nbJoueurs = 4
                 play_game(nbJoueurs)
+                is_save = set_bouton_continue()
             
             elif bouton_continue_game_rect.collidepoint(event.pos):
                 nbJoueurs = 4
-                play_game(nbJoueurs, charger=True)
+                if is_save:
+                    play_game(nbJoueurs, charger=True)
+                    is_save = set_bouton_continue()
 
             elif bouton_exit_rect.collidepoint(event.pos) :
                 running = False

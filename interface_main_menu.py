@@ -19,6 +19,7 @@ else :
     format_ecran = 1
 
 screen = pygame.display.set_mode(screen_size)
+is_save = False
 
 # Coordonnées des éléments graphiques
 if format_ecran == 0 :
@@ -88,13 +89,20 @@ else :
     bouton_exit_text = police_48.render("Quitter",True,(255,255,255))
     bouton_exit_text_rect = bouton_exit_text.get_rect(center=bouton_exit_rect.center)
 
+def set_bouton_continue():
+    global bouton_continue_game_color
+    global bouton_continue_game_text
+    global bouton_continue_game_text_rect
 
-def actualisation_fenetre(is_save):
-    pygame.display.flip()
-
-    screen.fill((255,255,255))
-    pygame.draw.rect(screen,bouton_play_color,bouton_play_rect,0)
-    screen.blit(bouton_play_text,bouton_play_text_rect)
+    try:
+        with open("sauvegarde.txt", mode='r') as fichier:
+            texte = fichier.read()
+            if  texte == "None":
+                is_save = False
+            else:
+                is_save = True
+    except FileNotFoundError:
+        is_save = False
 
     if is_save:
         bouton_continue_game_color = (0,80,20)
@@ -104,6 +112,15 @@ def actualisation_fenetre(is_save):
         bouton_continue_game_color = (110,140,120)
         bouton_continue_game_text = police_48.render("Pas de partie sauvegardée",True,(255,255,255))
         bouton_continue_game_text_rect = bouton_continue_game_text.get_rect(center=bouton_continue_game_rect.center)
+    
+    return is_save
+
+def actualisation_fenetre():
+    pygame.display.flip()
+
+    screen.fill((255,255,255))
+    pygame.draw.rect(screen,bouton_play_color,bouton_play_rect,0)
+    screen.blit(bouton_play_text,bouton_play_text_rect)
 
     pygame.draw.rect(screen,bouton_continue_game_color,bouton_continue_game_rect,0)
     screen.blit(bouton_continue_game_text,bouton_continue_game_text_rect)
