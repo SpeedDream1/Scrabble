@@ -8,7 +8,17 @@ pygame.init()
 running = True
 while running :
 
-    actualisation_fenetre()
+    try:
+        with open("sauvegarde.txt", mode='r') as fichier:
+            texte = fichier.read()
+            if  texte == "None":
+                is_save = False
+            else:
+                is_save = True
+    except FileNotFoundError:
+        is_save = False
+
+    actualisation_fenetre(is_save)
 
     for event in pygame.event.get() :
         # Quitter le jeu

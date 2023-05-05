@@ -35,7 +35,7 @@ if format_ecran == 0 :
     bouton_continue_game_heigth = 100
     bouton_continue_game_color = (0,80,20)
     bouton_continue_game_rect = pygame.Rect(bouton_continue_game_coordonnees[0],bouton_continue_game_coordonnees[1],bouton_continue_game_width,bouton_continue_game_heigth)
-    bouton_continue_game_text = police_48.render("Reprendre une Partie",True,(255,255,255))
+    bouton_continue_game_text = police_48.render("Reprendre la Partie",True,(255,255,255))
     bouton_continue_game_text_rect = bouton_continue_game_text.get_rect(center=bouton_continue_game_rect.center)
 
     bouton_option_coordonnees = (290,410)
@@ -69,7 +69,7 @@ else :
     bouton_continue_game_heigth = 100
     bouton_continue_game_color = (0,80,20)
     bouton_continue_game_rect = pygame.Rect(bouton_continue_game_coordonnees[0],bouton_continue_game_coordonnees[1],bouton_continue_game_width,bouton_continue_game_heigth)
-    bouton_continue_game_text = police_48.render("Reprendre une Partie",True,(255,255,255))
+    bouton_continue_game_text = police_48.render("Reprendre la Partie",True,(255,255,255))
     bouton_continue_game_text_rect = bouton_continue_game_text.get_rect(center=bouton_continue_game_rect.center)
 
     bouton_option_coordonnees = (290,470)
@@ -89,12 +89,21 @@ else :
     bouton_exit_text_rect = bouton_exit_text.get_rect(center=bouton_exit_rect.center)
 
 
-def actualisation_fenetre():
+def actualisation_fenetre(is_save):
     pygame.display.flip()
 
     screen.fill((255,255,255))
     pygame.draw.rect(screen,bouton_play_color,bouton_play_rect,0)
     screen.blit(bouton_play_text,bouton_play_text_rect)
+
+    if is_save:
+        bouton_continue_game_color = (0,80,20)
+        bouton_continue_game_text = police_48.render("Reprendre la Partie",True,(255,255,255))
+        bouton_continue_game_text_rect = bouton_continue_game_text.get_rect(center=bouton_continue_game_rect.center)
+    else:
+        bouton_continue_game_color = (110,140,120)
+        bouton_continue_game_text = police_48.render("Pas de partie sauvegardée",True,(255,255,255))
+        bouton_continue_game_text_rect = bouton_continue_game_text.get_rect(center=bouton_continue_game_rect.center)
 
     pygame.draw.rect(screen,bouton_continue_game_color,bouton_continue_game_rect,0)
     screen.blit(bouton_continue_game_text,bouton_continue_game_text_rect)

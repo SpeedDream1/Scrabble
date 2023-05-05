@@ -127,6 +127,7 @@ def play_game(nbJoueur,charger=False) :
             fichier.write(str(premier_tour)+"\n")
 
     running = True
+    fin_de_partie = False
     mvt_lettre = (False,0)
 
     # ______________________________________[Lancement de la partie]__________________________________________
@@ -169,6 +170,8 @@ def play_game(nbJoueur,charger=False) :
                         joueurs[i][0] -= valeur_reste # chaque autre joueur déduit la valeur de ses lettres
                         cumul += valeur_reste
                     joueurs[tour][0] += cumul # le joueur ayant finit récupère tout ces points
+                    running == False
+                    fin_de_partie = True
                     break   # FIN DE PARTIE
 
             else: 
@@ -187,6 +190,8 @@ def play_game(nbJoueur,charger=False) :
                     for i in range(1,nb_joueur+1):
                         valeur_reste = sum([POINT_LETTRE[i] for i in joueurs[i][1] if i != '_'])
                         joueurs[i][0] -= valeur_reste # chaque autre joueur déduit la valeur de ses lettres
+                    running == False
+                    fin_de_partie = True
                     break   # FIN DE PARTIE
             
             tour = tour%nb_joueur + 1 # au joueur suivant
@@ -506,6 +511,10 @@ def play_game(nbJoueur,charger=False) :
             if mvt_lettre[0]:
                 (x, y) = pygame.mouse.get_pos()
                 J_lettres_img[mvt_lettre[1]].position.topleft = (x, y)
+
+    if fin_de_partie:
+        with open("sauvegarde.txt", 'w') as fichier:
+            fichier.write("None")
 
 if __name__ == "__main__":
     play_game(4)
