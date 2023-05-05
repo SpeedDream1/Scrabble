@@ -215,20 +215,21 @@ def set_mode_defaussage(set=True):
         global bouton_defausser_text_rect
         global bouton_passer_tour_text
         global bouton_passer_tour_text_rect
+        global bouton_ranger_lettres_color
 
         bouton_defausser_text = police_48.render("Annuler",True,(255,255,255))
         bouton_defausser_text_rect = bouton_defausser_text.get_rect(center=bouton_defausser_rect.center)
-
         bouton_passer_tour_text = police_28.render("Annuler et passer",True,(255,255,255))
         bouton_passer_tour_text_rect = bouton_passer_tour_text.get_rect(center=bouton_passer_tour_rect.center)
+        bouton_ranger_lettres_color = (200,200,255)
 
     else:
 
         bouton_defausser_text = police_48.render("Defausser",True,(255,255,255))
         bouton_defausser_text_rect = bouton_defausser_text.get_rect(center=bouton_defausser_rect.center)
-
         bouton_passer_tour_text = police_32.render("Passer son tour",True,(255,255,255))
         bouton_passer_tour_text_rect = bouton_passer_tour_text.get_rect(center=bouton_passer_tour_rect.center)
+        bouton_ranger_lettres_color = (0,89,255)
             
 # Changer les boutons pour le mode de selection de lettre du joker
 def set_mode_joker(set=True):

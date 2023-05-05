@@ -117,6 +117,21 @@ def play_game(nbJoueur,charger=False) :
             # mot = get_lettres(coord_min, colonne, sens, coord_max-coord_min+1)
         return mot
 
+    def affichage_lettres():
+        for img in lettres_grises:
+            screen.blit(img.image_grise , img.position)
+        for i, img in enumerate(J_lettres_img):
+            if img != '_' and (not mvt_lettre[0] or img != mvt_lettre[1]):
+                if defaussage and J_lettres[i] == '^':
+                    screen.blit(img.image_defausse , img.position)
+                else:
+                    screen.blit(img.image , img.position)
+        if mvt_lettre[0]: # on met la lettre tenue au premier plan
+            img = J_lettres_img[mvt_lettre[1]]
+            screen.blit(img.image , img.position)
+        # Affichage des scores
+        affichage_score(joueurs,tour)
+
     def save():
         with open("sauvegarde.txt", 'w') as fichier:
             fichier.write(str(nb_joueur)+str(tour)+"\n")
@@ -206,19 +221,7 @@ def play_game(nbJoueur,charger=False) :
             save()
 
         # Placement des lettres
-        for img in lettres_grises:
-            screen.blit(img.image_grise , img.position)
-        for i, img in enumerate(J_lettres_img):
-            if img != '_' and (not mvt_lettre[0] or img != mvt_lettre[1]):
-                if defaussage and J_lettres[i] == '^':
-                    screen.blit(img.image_defausse , img.position)
-                else:
-                    screen.blit(img.image , img.position)
-        if mvt_lettre[0]: # on met la lettre tenue au premier plan
-            img = J_lettres_img[mvt_lettre[1]]
-            screen.blit(img.image , img.position)
-        # Affichage des scores
-        affichage_score(joueurs,tour)
+        affichage_lettres()
 
         # Evenements
         for event in pygame.event.get() :
@@ -317,6 +320,8 @@ def play_game(nbJoueur,charger=False) :
                             print("entrez la lettres que le joker remplace")
                             set_mode_joker()
                             while event.type != pygame.KEYDOWN: # le joueur choisit la lettre
+                                actualisation_fenetre()  
+                                affichage_lettres()                              
                                 for event in pygame.event.get():
                                     if event.type == pygame.KEYDOWN:
                                         print(pygame.key.name(event.key))
