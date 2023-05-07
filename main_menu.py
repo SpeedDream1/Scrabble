@@ -1,6 +1,7 @@
 import pygame
 from game import play_game
 from interface_main_menu import *
+from nouvelle_partie import new_game
 
 pygame.init()
 is_save = set_bouton_continue()
@@ -18,10 +19,11 @@ while running :
 
         elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 :
             if bouton_play_rect.collidepoint(event.pos) :
-                nbJoueurs = 4
+                nbJoueurs = new_game()
                 play_game(nbJoueurs)
                 is_save = set_bouton_continue()
-            
+                
+
             elif bouton_continue_game_rect.collidepoint(event.pos):
                 nbJoueurs = 4
                 if is_save:

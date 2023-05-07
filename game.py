@@ -10,7 +10,7 @@ from interface_game import *
 
 
 
-def play_game(nbJoueur,charger=False) :
+def play_game(nb_joueur,charger=False) :
 
     # ______________________________________[préparation de la partie]__________________________________________
 
@@ -50,8 +50,6 @@ def play_game(nbJoueur,charger=False) :
             return pioche.pop(randrange(len(pioche)))
 
     else:
-
-        nb_joueur = 4 # int(input("nombre de joueurs: "))
 
         pioche = []  # initialisation de la pioche
         for key, value in QTT_LETTRES.items():
