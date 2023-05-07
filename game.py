@@ -315,11 +315,12 @@ def play_game(nb_joueur,charger=False) :
                     jokers = ['']*7
                     for i, lettre in enumerate(J_lettres):
                         if type(lettre) == tuple and joueurs[tour][1][i] == '*':
-                            print("entrez la lettres que le joker remplace")
                             set_mode_joker()
                             while event.type != pygame.KEYDOWN: # le joueur choisit la lettre
-                                actualisation_fenetre()  
-                                affichage_lettres()                              
+                                actualisation_fenetre()
+                                affichage_lettres()
+                                pygame.draw.rect(screen,joker_color,joker_rect,0)
+                                screen.blit(joker_text,joker_text_rect)                             
                                 for event in pygame.event.get():
                                     if event.type == pygame.KEYDOWN:
                                         print(pygame.key.name(event.key))

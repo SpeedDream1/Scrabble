@@ -9,6 +9,7 @@ police_28 = pygame.font.Font(None,28)
 police_32 = pygame.font.Font(None,32)
 police_48 = pygame.font.Font(None,48)
 police_38 = pygame.font.Font(None,38)
+police_64 = pygame.font.Font(None,64)
 
 # Définition de la fenetre du jeu
 if  pygame.display.Info().current_h < 933 : # Taille barre des taches = 84
@@ -71,6 +72,15 @@ if format_ecran == 0 :
     bouton_passer_tour_rect = pygame.Rect(bouton_passer_tour_coordonnees[0],bouton_passer_tour_coordonnees[1],bouton_passer_tour_width,bouton_passer_tour_heigth)
     bouton_passer_tour_text = police_28.render("Passer son tour",True,(255,255,255))
     bouton_passer_tour_text_rect = bouton_passer_tour_text.get_rect(center=bouton_passer_tour_rect.center)
+
+    # texte joker
+    joker_coordonnees = (100,300)
+    joker_width = 880
+    joker_heigth = 150
+    joker_color = (255,255,255)
+    joker_rect = pygame.Rect(joker_coordonnees[0],joker_coordonnees[1],joker_width,joker_heigth)
+    joker_text = police_64.render("Entrez la lettre que le joker remplace",True,(0,0,0))
+    joker_text_rect = joker_text.get_rect(center=joker_rect.center)
 
 else :
     # plateau
