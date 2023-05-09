@@ -318,9 +318,7 @@ def play_game(nb_joueur,charger=False) :
                             set_mode_joker()
                             while event.type != pygame.KEYDOWN: # le joueur choisit la lettre
                                 actualisation_fenetre()
-                                affichage_lettres()
-                                pygame.draw.rect(screen,joker_color,joker_rect,0)
-                                screen.blit(joker_text,joker_text_rect)                             
+                                affichage_lettres()                           
                                 for event in pygame.event.get():
                                     if event.type == pygame.KEYDOWN:
                                         print(pygame.key.name(event.key))
