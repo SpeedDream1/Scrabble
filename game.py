@@ -1,5 +1,6 @@
 from random import randrange, shuffle
 import pygame
+from time import time
 
 from data import *
 from trouver_mot import *
@@ -130,7 +131,7 @@ def play_game(nb_joueur,charger=False) :
         # Affichage des scores
         affichage_score(joueurs,tour)
 
-    def save():
+    def save_game():
         with open("sauvegarde.txt", 'w') as fichier:
             fichier.write(str(nb_joueur)+str(tour)+"\n")
             fichier.write(str(pioche)+"\n")
@@ -216,7 +217,7 @@ def play_game(nb_joueur,charger=False) :
                     placer_lettre(J_lettres_img[i],"chevalet",(i,))
             new_tour = False
             
-            save()
+            save_game()
 
         # Placement des lettres
         affichage_lettres()
@@ -316,14 +317,24 @@ def play_game(nb_joueur,charger=False) :
                     for i, lettre in enumerate(J_lettres):
                         if type(lettre) == tuple and joueurs[tour][1][i] == '*':
                             set_mode_joker()
-                            while event.type != pygame.KEYDOWN: # le joueur choisit la lettre
+                            lettre_choisit = ''
+                            timer = time()
+                            while not lettre_choisit.isalpha(): # le joueur choisit la lettre
                                 actualisation_fenetre()
-                                affichage_lettres()                           
+                                affichage_lettres()
+                                if time() < timer + 0.3:
+                                    screen.blit(J_lettres_img[i].image, J_lettres_img[i].position)
+                                elif time() < timer + 0.6:
+                                    screen.blit(J_lettres_img[i].image_grise, J_lettres_img[i].position)
+                                else:
+                                    timer = time()
+                                    
                                 for event in pygame.event.get():
                                     if event.type == pygame.KEYDOWN:
-                                        print(pygame.key.name(event.key))
-                                        jokers[i] = pygame.key.name(event.key).upper()
+                                        lettre_choisit = pygame.key.name(event.key).upper()
                                         break
+
+                            jokers[i] = lettre_choisit
                             set_mode_joker(False)
 
                     # au premier tour la case du milieu doit être recouverte
