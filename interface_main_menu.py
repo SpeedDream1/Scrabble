@@ -10,13 +10,15 @@ police_32 = pygame.font.Font(None,32)
 police_48 = pygame.font.Font(None,48)
 police_38 = pygame.font.Font(None,38)
 
-# Définition de la fenetre du jeu
-if  pygame.display.Info().current_h < 933 : # Taille barre des taches = 84
-    screen_size = (1080, 751)
-    format_ecran = 0
+# Taille écran
+# Taille écran
+with open("options.txt", 'r') as fichier :
+    chargement = fichier.readlines()
+    format_ecran = int(chargement[0])
+if format_ecran == '0' :
+    screen_size = (1080,751)
 else :
-    screen_size = (1080, 849)
-    format_ecran = 1
+    screen_size = (1080,849)
 
 screen = pygame.display.set_mode(screen_size)
 is_save = False

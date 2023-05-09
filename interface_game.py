@@ -11,13 +11,14 @@ police_48 = pygame.font.Font(None,48)
 police_38 = pygame.font.Font(None,38)
 police_64 = pygame.font.Font(None,64)
 
-# Définition de la fenetre du jeu
-if  pygame.display.Info().current_h < 933 : # Taille barre des taches = 84
-    screen_size = (1080, 751)
-    format_ecran = 0
+# Taille écran
+with open("options.txt", 'r') as fichier :
+    chargement = fichier.readlines()
+    format_ecran = int(chargement[0])
+if format_ecran == 0 :
+    screen_size = (1080,751)
 else :
-    screen_size = (1080, 849)
-    format_ecran = 1
+    screen_size = (1080,849)
 
 #screen_size = (1080, 849)
 #format_ecran = 1
@@ -175,7 +176,7 @@ def affichage_score(joueurs,tour) :
         score_joueur_coord = {}
         for i in score :
             arriere_plan_score_coordonnees = (781,0+y)
-            score_joueur_coord[i[0]] = arriere_plan_score_coordonnees
+            score_joueur_coord[i] = arriere_plan_score_coordonnees
             arriere_plan_score_width = 299
             arriere_plan_score_heigth = 50
             if i[0] == tour :

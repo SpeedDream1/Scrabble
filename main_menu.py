@@ -1,9 +1,20 @@
 import pygame
+
+#Lancement de la fenêtre
+pygame.init()
+
+# définition taille écran
+from interface_option import init_option
+init_option()
+
+# Import des autres fichiers
 from game import play_game
 from interface_main_menu import *
 from nouvelle_partie import new_game
 
+
 pygame.init()
+init_option()
 is_save = set_bouton_continue()
 
 running = True
