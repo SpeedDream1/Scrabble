@@ -15,7 +15,7 @@ police_38 = pygame.font.Font(None,38)
 with open("options.txt", 'r') as fichier :
     chargement = fichier.readlines()
     format_ecran = int(chargement[0])
-if format_ecran == '0' :
+if format_ecran == 0 :
     screen_size = (1080,751)
 else :
     screen_size = (1080,849)

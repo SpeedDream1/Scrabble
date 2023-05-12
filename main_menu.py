@@ -11,7 +11,9 @@ init_option()
 from game import play_game
 from interface_main_menu import *
 from nouvelle_partie import new_game
-
+"""
+from option import option
+"""
 
 pygame.init()
 init_option()
@@ -40,6 +42,9 @@ while running :
                 if is_save:
                     play_game(nbJoueurs, charger=True)
                     is_save = set_bouton_continue()
+            
+            elif bouton_option_rect.collidepoint(event.pos) :
+                option()
 
             elif bouton_exit_rect.collidepoint(event.pos) :
                 running = False

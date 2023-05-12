@@ -174,27 +174,26 @@ def affichage_score(joueurs,tour) :
     else :
         y = 0
         score_joueur_coord = {}
-        for i in score :
+        for i in range(1,len(joueurs)) :
             arriere_plan_score_coordonnees = (781,0+y)
             score_joueur_coord[i] = arriere_plan_score_coordonnees
             arriere_plan_score_width = 299
             arriere_plan_score_heigth = 50
-            if i[0] == tour :
+            if i == tour :
                 arriere_plan_score_color = (75,75,75)
             else :
                 arriere_plan_score_color = (255,255,255)
             arriere_plan_score_rect = pygame.Rect(arriere_plan_score_coordonnees[0],arriere_plan_score_coordonnees[1],arriere_plan_score_width,arriere_plan_score_heigth)
-            score_joueur_text = police_48.render(f"Joueur {i[0]} : {i[1]}",True,(0,0,0))
+            score_joueur_text = police_38.render(f"Joueur {i} : {joueurs[i][0]}",True,(0,0,0))
             score_joueur_text_rect = score_joueur_text.get_rect(center=arriere_plan_score_rect.center)
             pygame.draw.rect(screen,arriere_plan_score_color,arriere_plan_score_rect)
             screen.blit(score_joueur_text,score_joueur_text_rect)
             y+=50
-        
         y=0
         j=1
         for i in score :
             y = i[0]*50-50
-            classement_coord = (751,y)
+            classement_coord = (849,y)
             classement_width = 30
             classement_heigth = 50
             if j<=3 :
@@ -208,7 +207,7 @@ def affichage_score(joueurs,tour) :
             screen.blit(classement_text,classement_text_rect)
             y+=50
             j+=1
-    
+
 
 # Changer les boutons pour le mode defaussage
 def set_mode_defaussage(set=True):
@@ -233,6 +232,8 @@ def set_mode_defaussage(set=True):
         bouton_passer_tour_text_rect = bouton_passer_tour_text.get_rect(center=bouton_passer_tour_rect.center)
         bouton_ranger_lettres_color = (0,89,255)
             
+
+
 # Changer les boutons pour le mode de selection de lettre du joker
 def set_mode_joker(set=True):
     if set:
