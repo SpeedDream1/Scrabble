@@ -10,7 +10,7 @@ police_32 = pygame.font.Font(None,32)
 police_48 = pygame.font.Font(None,48)
 police_38 = pygame.font.Font(None,38)
 police_64 = pygame.font.Font(None,64)
-police_16 = pygame.font.Font(None,20)
+police_24 = pygame.font.Font(None,24)
 texte_aff = None
 # Taille écran
 with open("options.txt", 'r') as fichier :
@@ -295,10 +295,24 @@ def convert_px_coord(x, y) :
     
 
 def affichage_texte (texte) :
-    global texte_aff
-    global texte_aff_rect
-    texte_aff = police_16.render(texte,True,(0,0,0))
-    texte_aff_rect = texte_aff.get_rect()
+    global texte_aff_1
+    global texte_aff_rect_1
+    global texte_aff_2
+    global texte_aff_rect_2
+    if len(texte) :
+        texte_aff_1 = police_24.render(texte,True,(0,0,0))
+        texte_aff_rect_1 = texte_aff.get_rect()
+        texte_aff_2 = None
+    else :
+        for i in range(len(texte),-1,-1) :
+            if texte[i] == " " :
+                e = i
+                break
+        texte_aff_1 = police_24.render(texte[e],True,(0,0,0))
+        texte_aff_rect_1 = texte_aff.get_rect()
+        texte_aff_2 = police_24.render(texte[e:],True,(0,0,0))
+        texte_aff_rect_2 = texte_aff.get_rect()  
+
     
     
     
@@ -327,7 +341,11 @@ def actualisation_fenetre():
     pygame.draw.rect(screen,bouton_passer_tour_color,bouton_passer_tour_rect,0)
     screen.blit(bouton_passer_tour_text,bouton_passer_tour_text_rect)
 
-    texte_aff_coordonnees = (915,425)
-    if texte_aff != None :
-        texte_aff_rect.center = (texte_aff_coordonnees)
-        screen.blit(texte_aff,texte_aff_rect)
+    texte_aff_coordonnees_1 = (915,425)
+    texte_aff_coordonnees_2 = (915,470)
+    if texte_aff_1 != None :
+        texte_aff_rect_1.center = (texte_aff_coordonnees_1)
+        screen.blit(texte_aff_1,texte_aff_rect_1)
+    if texte_aff_2 != None :
+        texte_aff_rect_2.center = (texte_aff_coordonnees_2)
+        screen.blit(texte_aff_1,texte_aff_rect_1)
