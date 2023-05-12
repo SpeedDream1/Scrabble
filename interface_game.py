@@ -10,7 +10,8 @@ police_32 = pygame.font.Font(None,32)
 police_48 = pygame.font.Font(None,48)
 police_38 = pygame.font.Font(None,38)
 police_64 = pygame.font.Font(None,64)
-
+police_16 = pygame.font.Font(None,20)
+texte_aff = None
 # Taille écran
 with open("options.txt", 'r') as fichier :
     chargement = fichier.readlines()
@@ -193,7 +194,7 @@ def affichage_score(joueurs,tour) :
         j=1
         for i in score :
             y = i[0]*50-50
-            classement_coord = (849,y)
+            classement_coord = (751,y)
             classement_width = 30
             classement_heigth = 50
             if j<=3 :
@@ -313,6 +314,14 @@ def convert_px_coord(x, y) :
     else:
         return "en dehors", 0   
     
+
+def affichage_texte (texte) :
+    global texte_aff
+    global texte_aff_rect
+    texte_aff = police_16.render(texte,True,(0,0,0))
+    texte_aff_rect = texte_aff.get_rect()
+    
+    
     
 def actualisation_fenetre():
     pygame.display.flip() # MaJ de la fenêtre
@@ -338,3 +347,8 @@ def actualisation_fenetre():
     # Bouton Passer son tour
     pygame.draw.rect(screen,bouton_passer_tour_color,bouton_passer_tour_rect,0)
     screen.blit(bouton_passer_tour_text,bouton_passer_tour_text_rect)
+
+    texte_aff_coordonnees = (915,425)
+    if texte_aff != None :
+        texte_aff_rect.center = (texte_aff_coordonnees)
+        screen.blit(texte_aff,texte_aff_rect)
