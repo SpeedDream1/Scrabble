@@ -11,7 +11,8 @@ police_48 = pygame.font.Font(None,48)
 police_38 = pygame.font.Font(None,38)
 police_64 = pygame.font.Font(None,64)
 police_24 = pygame.font.Font(None,24)
-texte_aff = None
+texte_aff_1 = None
+texte_aff_2 = None
 # Taille écran
 with open("options.txt", 'r') as fichier :
     chargement = fichier.readlines()
@@ -75,6 +76,10 @@ if format_ecran == 0 :
     bouton_passer_tour_text = police_28.render("Passer son tour",True,(255,255,255))
     bouton_passer_tour_text_rect = bouton_passer_tour_text.get_rect(center=bouton_passer_tour_rect.center)
 
+    texte_aff_coordonnees_1 = (965,350)
+    texte_aff_coordonnees_2 = (965,390)
+    lim_carac = 30
+
 else :
     # plateau
     coord_plateau = (0,0)
@@ -114,6 +119,9 @@ else :
     bouton_passer_tour_text = police_32.render("Passer son tour",True,(255,255,255))
     bouton_passer_tour_text_rect = bouton_passer_tour_text.get_rect(center=bouton_passer_tour_rect.center)
 
+    texte_aff_coordonnees_1 = (915,350)
+    texte_aff_coordonnees_2 = (915,390)
+    lim_carac = 35
 # Création liste des coordonnées de toute les cases
 coord_case_plateau = [[(coord_plateau[0]+1+50*i , coord_plateau[1]+1+50*j) for j in range(15)] for i in range(15)] # plateau
 coord_case_chevalet = [((coord_chevalet[0]+5 , coord_chevalet[1]+52+100*i) if format_ecran == 0 else
@@ -320,19 +328,19 @@ def affichage_texte (texte) :
     global texte_aff_rect_1
     global texte_aff_2
     global texte_aff_rect_2
-    if len(texte) :
+    if len(texte)<lim_carac :
         texte_aff_1 = police_24.render(texte,True,(0,0,0))
-        texte_aff_rect_1 = texte_aff.get_rect()
+        texte_aff_rect_1 = texte_aff_1.get_rect()
         texte_aff_2 = None
     else :
-        for i in range(len(texte),-1,-1) :
+        for i in range(lim_carac,-1,-1) :
             if texte[i] == " " :
                 e = i
                 break
-        texte_aff_1 = police_24.render(texte[e],True,(0,0,0))
-        texte_aff_rect_1 = texte_aff.get_rect()
+        texte_aff_1 = police_24.render(texte[:e],True,(0,0,0))
+        texte_aff_rect_1 = texte_aff_1.get_rect()
         texte_aff_2 = police_24.render(texte[e:],True,(0,0,0))
-        texte_aff_rect_2 = texte_aff.get_rect()  
+        texte_aff_rect_2 = texte_aff_2.get_rect()  
 
     
     
@@ -361,12 +369,10 @@ def actualisation_fenetre():
     # Bouton Passer son tour
     pygame.draw.rect(screen,bouton_passer_tour_color,bouton_passer_tour_rect,0)
     screen.blit(bouton_passer_tour_text,bouton_passer_tour_text_rect)
-
-    texte_aff_coordonnees_1 = (915,425)
-    texte_aff_coordonnees_2 = (915,470)
+    
     if texte_aff_1 != None :
         texte_aff_rect_1.center = (texte_aff_coordonnees_1)
         screen.blit(texte_aff_1,texte_aff_rect_1)
     if texte_aff_2 != None :
         texte_aff_rect_2.center = (texte_aff_coordonnees_2)
-        screen.blit(texte_aff_1,texte_aff_rect_1)
+        screen.blit(texte_aff_2,texte_aff_rect_2)

@@ -151,7 +151,6 @@ def play_game(nb_joueur,charger=False) :
     while running :
 
         actualisation_fenetre()
-
         # Si c'est un nouveau tour
         if new_tour:
             if '^' in J_lettres: # si il y a des lettres à remplacer
