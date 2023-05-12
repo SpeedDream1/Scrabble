@@ -5,7 +5,7 @@ pygame.init()
 
 # définition taille écran
 from interface_option import init_option
-#init_option()
+init_option()
 
 # Import des autres fichiers
 from game import play_game

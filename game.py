@@ -61,7 +61,7 @@ def play_game(nb_joueur,charger=False) :
             return pioche.pop(randrange(len(pioche)))
         
         # initialisation des joueurs: [score, lettres]
-        joueurs = [''] + [[0, [piocher() for _ in range(7)]] for i in range(nb_joueur)]
+        joueurs = [''] + [[0, [piocher() for _ in range(7)], i+1] for i in range(nb_joueur)]
 
         # initialisation du plateau
         plateau = [list(i) for i in PLATEAU_DEPART]
@@ -75,7 +75,6 @@ def play_game(nb_joueur,charger=False) :
         tour = 0
         J_lettres = []
         lettres_grises = []
-        set_mode_fin(False)
 
     
     # Trouver un mot à partir des coordonnés d'une case et de la direction
@@ -144,6 +143,8 @@ def play_game(nb_joueur,charger=False) :
     running = True
     fin_de_partie = False
     mvt_lettre = (False,0)
+    set_mode_fin(False)
+    # affichage_texte("eeeeeeeeeeeeeeeee eeeeeeeeeeeeee eeeee")
 
     # ______________________________________[Lancement de la partie]__________________________________________
 
@@ -184,6 +185,9 @@ def play_game(nb_joueur,charger=False) :
                     joueurs[tour][0] += cumul # le joueur ayant finit récupère tout ces points
                     fin_de_partie = True
                     set_mode_fin()
+                    joueur_score = joueurs[1:]
+                    joueur_score.sort(key=lambda j: j[0])
+                    affichage_texte(f"Le joueur {joueur_score[0][2]} a gagné")
                     # FIN DE PARTIE
 
             else: 
@@ -204,6 +208,9 @@ def play_game(nb_joueur,charger=False) :
                         joueurs[i][0] -= valeur_reste # chaque autre joueur déduit la valeur de ses lettres
                     fin_de_partie = True
                     set_mode_fin()
+                    joueur_score = joueurs[1:]
+                    joueur_score.sort(key=lambda j: j[0])
+                    affichage_texte(f"Le joueur {joueur_score[0][2]} a gagné")
                     # FIN DE PARTIE
             
             tour = tour%nb_joueur + 1 # au joueur suivant
@@ -319,6 +326,7 @@ def play_game(nb_joueur,charger=False) :
                         if type(lettre) == tuple and joueurs[tour][1][i] == '*':
                             set_mode_joker()
                             lettre_choisit = ''
+                            affichage_texte("Pressez la lettre choisit")
                             timer = time()
                             while not lettre_choisit.isalpha(): # le joueur choisit la lettre
                                 actualisation_fenetre()
@@ -337,6 +345,7 @@ def play_game(nb_joueur,charger=False) :
 
                             jokers[i] = lettre_choisit
                             set_mode_joker(False)
+                            affichage_texte("")
 
                     # au premier tour la case du milieu doit être recouverte
                     if premier_tour:
@@ -411,10 +420,15 @@ def play_game(nb_joueur,charger=False) :
 
                         mots[i] = "".join(mots[i])
 
+                    if mots == []:
+                        affichage_texte("Vous devez former un mot de deux lettres au moins")
+                        valide = False
+                        break
+                    
                     # verification des mots
                     for mot in mots:
                         if not mot_existe(mot):
-                            affichage_texte(f"le mot {mot} n'est pas valide !")
+                            affichage_texte(f"Le mot {mot} n'est pas valide !")
                             valide = False
                             break
                     if not valide:
@@ -477,6 +491,7 @@ def play_game(nb_joueur,charger=False) :
 
                         set_mode_defaussage()
                         defaussage = True
+                        affichage_texte("Selectionnez les lettres à défausser")
 
                         for i in range(7):
                             lettre = J_lettres[i]
@@ -495,9 +510,10 @@ def play_game(nb_joueur,charger=False) :
                 elif bouton_ranger_lettres_rect.collidepoint(event.pos):
                     if fin_de_partie:
                         continue
-                    
                     if defaussage:
                         continue
+
+                    affichage_texte("")
                     for i in range(7):
                         lettre = J_lettres[i]
                         if type(lettre) == tuple:
@@ -511,6 +527,7 @@ def play_game(nb_joueur,charger=False) :
                     if fin_de_partie:
                         continue
                     
+                    affichage_texte("")
                     if defaussage:
                         set_mode_defaussage(False)
                         J_lettres = list(joueurs[tour][1])

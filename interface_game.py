@@ -76,9 +76,9 @@ if format_ecran == 0 :
     bouton_passer_tour_text = police_28.render("Passer son tour",True,(255,255,255))
     bouton_passer_tour_text_rect = bouton_passer_tour_text.get_rect(center=bouton_passer_tour_rect.center)
 
-    texte_aff_coordonnees_1 = (965,350)
+    texte_aff_coordonnees_1 = (965,370)
     texte_aff_coordonnees_2 = (965,390)
-    lim_carac = 30
+    lim_carac = 24
 
 else :
     # plateau
@@ -267,6 +267,7 @@ def set_mode_fin(set=True):
         global bouton_valider_text
         global bouton_valider_text_rect
         global bouton_ranger_lettres_color
+        global bouton_valider_color
         global bouton_defausser_color
         global bouton_passer_tour_color
 
@@ -275,6 +276,7 @@ def set_mode_fin(set=True):
         bouton_defausser_color = (255,170,170)
         bouton_ranger_lettres_color = (200,200,255)
         bouton_passer_tour_color = (143,112,95)
+        bouton_valider_color = (30,100,30)
 
     else:
         
@@ -283,6 +285,7 @@ def set_mode_fin(set=True):
         bouton_defausser_color = (255,0,0)
         bouton_ranger_lettres_color = (0,89,255)
         bouton_passer_tour_color = (95,50,25)
+        bouton_valider_color = (0,153,102)
 
 
 # Fonction affichage d'une lettre
@@ -328,15 +331,19 @@ def affichage_texte (texte) :
     global texte_aff_rect_1
     global texte_aff_2
     global texte_aff_rect_2
-    if len(texte)<lim_carac :
+    if len(texte)<=lim_carac :
         texte_aff_1 = police_24.render(texte,True,(0,0,0))
         texte_aff_rect_1 = texte_aff_1.get_rect()
         texte_aff_2 = None
     else :
-        for i in range(lim_carac,-1,-1) :
+        for i in range(lim_carac,lim_carac-10,-1) :
             if texte[i] == " " :
                 e = i
                 break
+            try:
+                e = e
+            except UnboundLocalError:
+                e = lim_carac
         texte_aff_1 = police_24.render(texte[:e],True,(0,0,0))
         texte_aff_rect_1 = texte_aff_1.get_rect()
         texte_aff_2 = police_24.render(texte[e:],True,(0,0,0))
