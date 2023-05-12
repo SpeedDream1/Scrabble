@@ -75,6 +75,7 @@ def play_game(nb_joueur,charger=False) :
         tour = 0
         J_lettres = []
         lettres_grises = []
+        set_mode_fin(False)
 
     
     # Trouver un mot à partir des coordonnés d'une case et de la direction
@@ -146,8 +147,6 @@ def play_game(nb_joueur,charger=False) :
 
     # ______________________________________[Lancement de la partie]__________________________________________
 
-    #for i in range(70):
-    #    piocher()
 
     while running :
 
@@ -177,16 +176,16 @@ def play_game(nb_joueur,charger=False) :
                     i += 1
                 
                 if joueurs[tour][1] == ['_','_','_','_','_','_','_'] and pioche == []:
-                    running == False # pioche et main d'un joueur vide = fin de la partie
+                    # pioche et main d'un joueur vide = fin de la partie
                     cumul = 0
                     for i in range(1,nb_joueur+1):
                         valeur_reste = sum([POINT_LETTRE[i] for i in joueurs[i][1] if i != '_'])
                         joueurs[i][0] -= valeur_reste # chaque autre joueur déduit la valeur de ses lettres
                         cumul += valeur_reste
                     joueurs[tour][0] += cumul # le joueur ayant finit récupère tout ces points
-                    running == False
                     fin_de_partie = True
-                    break   # FIN DE PARTIE
+                    set_mode_fin()
+                    # FIN DE PARTIE
 
             else: 
                 for i in range(len(J_lettres)):
@@ -200,13 +199,13 @@ def play_game(nb_joueur,charger=False) :
                 saut_tour_affile += 1
                 saut_tour = False
                 if len(pioche) < 7 and saut_tour_affile == nb_joueur*3:
-                    running == False # les joueurs ne peuvent plus jouer: fin de la partie
+                     # les joueurs ne peuvent plus jouer: fin de la partie
                     for i in range(1,nb_joueur+1):
                         valeur_reste = sum([POINT_LETTRE[i] for i in joueurs[i][1] if i != '_'])
                         joueurs[i][0] -= valeur_reste # chaque autre joueur déduit la valeur de ses lettres
-                    running == False
                     fin_de_partie = True
-                    break   # FIN DE PARTIE
+                    set_mode_fin()
+                    # FIN DE PARTIE
             
             tour = tour%nb_joueur + 1 # au joueur suivant
 
@@ -293,7 +292,10 @@ def play_game(nb_joueur,charger=False) :
                 
                 # validation du mot
                 if bouton_valider_rect.collidepoint(event.pos):
-                    
+                    if fin_de_partie:
+                        running = False
+                        break
+
                     if defaussage:
                         if '^' in J_lettres:
                             set_mode_defaussage(False)
@@ -466,6 +468,8 @@ def play_game(nb_joueur,charger=False) :
 
                 # Defausser des lettres
                 elif bouton_defausser_rect.collidepoint(event.pos):
+                    if fin_de_partie:
+                        continue
 
                     if defaussage == False:
                         if len(pioche) < 7:
@@ -490,6 +494,9 @@ def play_game(nb_joueur,charger=False) :
 
                 # Ranger les lettres
                 elif bouton_ranger_lettres_rect.collidepoint(event.pos):
+                    if fin_de_partie:
+                        continue
+                    
                     if defaussage:
                         continue
                     for i in range(7):
@@ -502,6 +509,9 @@ def play_game(nb_joueur,charger=False) :
 
                 # Passer son tour
                 elif bouton_passer_tour_rect.collidepoint(event.pos):
+                    if fin_de_partie:
+                        continue
+                    
                     if defaussage:
                         set_mode_defaussage(False)
                         J_lettres = list(joueurs[tour][1])
