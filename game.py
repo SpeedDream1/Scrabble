@@ -299,7 +299,7 @@ def play_game(nb_joueur,charger=False) :
                             set_mode_defaussage(False)
                             new_tour = True
                         else:
-                            print("Vous devez selectionner au moins une lettre")
+                            affichage_texte("Vous devez selectionner au moins une lettre")
                         continue
 
                     valide = True
@@ -308,7 +308,7 @@ def play_game(nb_joueur,charger=False) :
                     lettres_placees.sort()
 
                     if len(lettres_placees) < 1:
-                        print("Vous devez placer au moins une lettre")
+                        affichage_texte("Vous devez placer au moins une lettre")
                         valide = False
                         continue
                     
@@ -340,7 +340,7 @@ def play_game(nb_joueur,charger=False) :
                     # au premier tour la case du milieu doit être recouverte
                     if premier_tour:
                         if not (7, 7) in lettres_placees:
-                            print("Vous devez placer votre mot sur la case du milieu")
+                            affichage_texte("Vous devez placer votre mot sur la case du milieu")
                             valide = False
                             continue
 
@@ -355,7 +355,7 @@ def play_game(nb_joueur,charger=False) :
                                     break 
                             break
                     if not valide:
-                        print("les lettres doivent être alignés")
+                        affichage_texte("les lettres doivent être alignés")
                         continue
                     
                     # recuperation du mot
@@ -363,7 +363,7 @@ def play_game(nb_joueur,charger=False) :
 
                     # verification que le mot est continu
                     if len([i for i in mot if i.isdigit()]) != len(lettres_placees):
-                        print("les lettres doivent former un mot continu")
+                        affichage_texte("les lettres doivent former un mot continu")
                         valide = False
                         continue
 
@@ -383,7 +383,7 @@ def play_game(nb_joueur,charger=False) :
                                     valide = True
                                     break
                     if not valide:
-                        print("Vous devez inclure une lettre déjà placée")
+                        affichage_texte("Vous devez inclure une lettre déjà placée")
                         continue
 
                     # formatage des mots + detection des cases speciales
@@ -413,7 +413,7 @@ def play_game(nb_joueur,charger=False) :
                     # verification des mots
                     for mot in mots:
                         if not mot_existe(mot):
-                            print(f"le mot {mot} n'est pas valide !")
+                            affichage_texte(f"le mot {mot} n'est pas valide !")
                             valide = False
                             break
                     if not valide:
@@ -446,7 +446,7 @@ def play_game(nb_joueur,charger=False) :
                     if len(lettres_placees) == 7:
                         points += 50
                         
-                    print("points gagnés:", points)
+                    affichage_texte(f"points gagnés : {points}")
                     joueurs[tour][0] += points
 
                     # remplacement des lettres placées
@@ -469,7 +469,7 @@ def play_game(nb_joueur,charger=False) :
 
                     if defaussage == False:
                         if len(pioche) < 7:
-                            print("Vous ne pouvez pas défausser si il reste moins de 7 cases dans la pioche")
+                            affichage_texte("Il reste moins de 7 cases dans la pioche")
                             continue
 
                         set_mode_defaussage()
