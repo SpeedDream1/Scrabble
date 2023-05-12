@@ -193,7 +193,7 @@ def affichage_score(joueurs,tour) :
         j=1
         for i in score :
             y = i[0]*50-50
-            classement_coord = (849,y)
+            classement_coord = (751,y)
             classement_width = 30
             classement_heigth = 50
             if j<=3 :
