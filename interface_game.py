@@ -230,9 +230,7 @@ def set_mode_defaussage(set=True):
         bouton_defausser_text_rect = bouton_defausser_text.get_rect(center=bouton_defausser_rect.center)
         bouton_passer_tour_text = police_32.render("Passer son tour",True,(255,255,255))
         bouton_passer_tour_text_rect = bouton_passer_tour_text.get_rect(center=bouton_passer_tour_rect.center)
-        bouton_ranger_lettres_color = (0,89,255)
-            
-
+        bouton_ranger_lettres_color = (0,89,255)       
 
 # Changer les boutons pour le mode de selection de lettre du joker
 def set_mode_joker(set=True):
@@ -250,6 +248,29 @@ def set_mode_joker(set=True):
     else:
 
         bouton_valider_color = (0,153,102)
+        bouton_defausser_color = (255,0,0)
+        bouton_ranger_lettres_color = (0,89,255)
+        bouton_passer_tour_color = (95,50,25)
+
+# Changer les boutons pour la fin de partie
+def set_mode_fin(set=True):
+    if set:
+        global bouton_valider_text
+        global bouton_valider_text_rect
+        global bouton_ranger_lettres_color
+        global bouton_defausser_color
+        global bouton_passer_tour_color
+
+        bouton_valider_text = police_28.render("Menu principal",True,(255,255,255))
+        bouton_valider_text_rect = bouton_valider_text.get_rect(center=bouton_valider_rect.center)
+        bouton_defausser_color = (255,170,170)
+        bouton_ranger_lettres_color = (200,200,255)
+        bouton_passer_tour_color = (143,112,95)
+
+    else:
+        
+        bouton_valider_text = police_48.render("Valider",True,(255,255,255))
+        bouton_valider_text_rect = bouton_valider_text.get_rect(center=bouton_valider_rect.center)
         bouton_defausser_color = (255,0,0)
         bouton_ranger_lettres_color = (0,89,255)
         bouton_passer_tour_color = (95,50,25)
