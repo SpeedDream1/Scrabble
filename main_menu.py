@@ -43,9 +43,11 @@ while running :
                     play_game(nbJoueurs, charger=True)
                     is_save = set_bouton_continue()
             
-            elif bouton_option_rect.collidepoint(event.pos) :
-                option()
-
             elif bouton_exit_rect.collidepoint(event.pos) :
                 running = False
                 pygame.quit()
+            """
+            elif bouton_option_rect.collidepoint(event.pos) :
+                option()
+            """
+            
