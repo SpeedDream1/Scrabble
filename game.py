@@ -209,7 +209,7 @@ def play_game(nb_joueur,charger=False) :
             else:
                 saut_tour_affile += 1
                 saut_tour = False
-                if  saut_tour_affile == nb_joueur*3: # len(pioche) < 7 and
+                if len(pioche) < 7 and saut_tour_affile == nb_joueur*3:
                      # les joueurs ne peuvent plus jouer: fin de la partie
                     for i in range(1,nb_joueur+1):
                         valeur_reste = sum([POINT_LETTRE[i] for i in joueurs[i][1] if i != '_'])
