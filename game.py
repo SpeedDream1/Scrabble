@@ -75,6 +75,7 @@ def play_game(nb_joueur,charger=False) :
         tour = 0
         J_lettres = []
         lettres_grises = []
+        affichage_texte("")
 
     
     # Trouver un mot à partir des coordonnés d'une case et de la direction
@@ -139,6 +140,15 @@ def play_game(nb_joueur,charger=False) :
             fichier.write(str(plateau)+"\n")
             fichier.write(str(saut_tour_affile)+"\n")
             fichier.write(str(premier_tour)+"\n")
+    
+    def afficher_resultat(joueurs):
+        joueurs.sort(key=lambda j: j[0], reverse=True)
+        prems = [i[2] for i in joueurs if i[0]==joueurs[0][0]]
+        if len(prems) == 1:
+            affichage_texte(f"Le joueur {prems[0]} a gagné !")
+        else:
+            prems = (str(prems)[:-1])[1:]
+            affichage_texte(f"Les joueurs {prems} sont ex aequo.")
 
     running = True
     fin_de_partie = False
@@ -185,9 +195,7 @@ def play_game(nb_joueur,charger=False) :
                     joueurs[tour][0] += cumul # le joueur ayant finit récupère tout ces points
                     fin_de_partie = True
                     set_mode_fin()
-                    joueur_score = joueurs[1:]
-                    joueur_score.sort(key=lambda j: j[0])
-                    affichage_texte(f"Le joueur {joueur_score[0][2]} a gagné")
+                    afficher_resultat(joueurs[1:])
                     # FIN DE PARTIE
 
             else: 
@@ -201,16 +209,14 @@ def play_game(nb_joueur,charger=False) :
             else:
                 saut_tour_affile += 1
                 saut_tour = False
-                if len(pioche) < 7 and saut_tour_affile == nb_joueur*3:
+                if  saut_tour_affile == nb_joueur*3: # len(pioche) < 7 and
                      # les joueurs ne peuvent plus jouer: fin de la partie
                     for i in range(1,nb_joueur+1):
                         valeur_reste = sum([POINT_LETTRE[i] for i in joueurs[i][1] if i != '_'])
                         joueurs[i][0] -= valeur_reste # chaque autre joueur déduit la valeur de ses lettres
                     fin_de_partie = True
                     set_mode_fin()
-                    joueur_score = joueurs[1:]
-                    joueur_score.sort(key=lambda j: j[0])
-                    affichage_texte(f"Le joueur {joueur_score[0][2]} a gagné")
+                    afficher_resultat(joueurs[1:])
                     # FIN DE PARTIE
             
             tour = tour%nb_joueur + 1 # au joueur suivant
