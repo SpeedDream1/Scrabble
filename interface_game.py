@@ -18,7 +18,7 @@ with open("options.txt", 'r') as fichier :
     chargement = fichier.readlines()
     format_ecran = int(chargement[0])
 if format_ecran == 0 :
-    screen_size = (1080,751)
+    screen_size = (1080,752)
 else :
     screen_size = (1080,849)
 
@@ -38,7 +38,7 @@ if format_ecran == 0 :
     coord_chevalet = (20,0)
     
     # chevalet
-    chevalet_rect = pygame.Rect(coord_chevalet[0] ,coord_chevalet[1], 58, 751) # chevalet
+    chevalet_rect = pygame.Rect(coord_chevalet[0] ,coord_chevalet[1], 58, 752) # chevalet
     
     # bouton valider
     bouton_valider_coordonnees = (875,672)
@@ -123,7 +123,7 @@ else :
     texte_aff_coordonnees_2 = (915,390)
     lim_carac = 35
 # Création liste des coordonnées de toute les cases
-coord_case_plateau = [[(coord_plateau[0]+1+50*i , coord_plateau[1]+1+50*j) for j in range(15)] for i in range(15)] # plateau
+coord_case_plateau = [[(coord_plateau[0]+2+50*i , coord_plateau[1]+2+50*j) for j in range(15)] for i in range(15)] # plateau
 coord_case_chevalet = [((coord_chevalet[0]+5 , coord_chevalet[1]+52+100*i) if format_ecran == 0 else
                                 (coord_chevalet[0]+52+100*i, coord_chevalet[1]+5)) for i in range(7)] # chevalet
 
@@ -202,7 +202,7 @@ def affichage_score(joueurs,tour) :
         j=1
         for i in score :
             y = i[0]*50-50
-            classement_coord = (751,y)
+            classement_coord = (752,y)
             classement_width = 30
             classement_heigth = 50
             if j<=3 :
@@ -302,7 +302,7 @@ def griser_lettre (lettre) :
     
 # convertie des coordonnée en pixel en coordonnée de la case la plus proche
 def convert_px_coord(x, y) :
-    if coord_plateau[0] < x < coord_plateau[0]+751 and coord_plateau[1] < y < coord_plateau[1]+751 :
+    if coord_plateau[0] < x < coord_plateau[0]+752 and coord_plateau[1] < y < coord_plateau[1]+752 :
         x -= coord_plateau[0]
         y -= coord_plateau[1]
         x = round(x/50)
@@ -312,7 +312,7 @@ def convert_px_coord(x, y) :
         if y == 15 :
             y = 14
         return "plateau", (y, x)  # car coord inversées
-    elif format_ecran == 0 and coord_chevalet[0] < x < coord_chevalet[0]+58 and coord_chevalet[1] < y < coord_chevalet[1]+751:
+    elif format_ecran == 0 and coord_chevalet[0] < x < coord_chevalet[0]+58 and coord_chevalet[1] < y < coord_chevalet[1]+752:
         y -= coord_chevalet[1]
         if y > 652 :
             y = 652
